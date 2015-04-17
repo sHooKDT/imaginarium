@@ -11,7 +11,7 @@ function initialise() {
 
 function c_screen_to(tar_class) {
     var pages = document.body.getElementsByClassName('sw-page');
-    
+
     for (i = 0; i < pages.length; i++) {
         if (!pages.item(i).classList.contains(tar_class)) {
             pages.item(i).style.display = 'none';
@@ -21,7 +21,7 @@ function c_screen_to(tar_class) {
             pages.item(i).style.width = '75%';
             document.body.getElementsByClassName('map-bar').item(0).style.display = 'block';
         }
-        else { 
+        else {
             pages.item(i).style.width = '100%';
             document.body.getElementsByClassName('map-bar').item(0).style.display = 'none';
         }
@@ -53,6 +53,12 @@ function select_card(id) {
     card_view = document.body.getElementsByClassName('card_view').item(0).style;
     card_view.backgroundImage = 'url("../res/cards/' + id + '.jpg")';
     card_view.backgroundSize = '100% 100%'
+
+    gameSocket.send(json.stringify({
+      type: 'choice',
+      choice: id,
+      data: cur_ass
+    }))
 }
 
 function close_modal() {
@@ -60,5 +66,5 @@ function close_modal() {
 }
 
 function turn_accept() {
-    alert('Выбор сделан')
+
 }

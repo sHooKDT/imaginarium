@@ -2,10 +2,21 @@ var gameSocket = new WebSocket('ws://localhost:8275/socket');
 
 /*
 protocol = {
-    type: 'id, turn, vote, main_turn, score, status',
-    id: 'id',
-    choice: 'choose',
-    data: 'ass'
+    type: 'status, choice, join',
+    choice: 'card_id',
+    data: 'text'
+}
+
+client = {
+  type: 'choice',
+  choice: ,
+  data: 'ass'
+}
+
+server = {
+  type: 'status',
+  stage: 'id',
+  isMain: false
 }
 */
 
@@ -31,4 +42,3 @@ gameSocket.onmessage = function (event) {
 function send_smth(smth) {
     gameSocket.send(smth)
 }
-
