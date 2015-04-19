@@ -60,10 +60,11 @@
 .close-modal-but {
     position: absolute;
     top: 0;right: 0;
+    margin: 10px;
     width: 50px;
     height: 50px;
     border-radius: 10px;
-    background-image: url('res/close.svg');
+    background-image: url('../res/close.svg');
 }
 .close-modal-but:hover {
     cursor: pointer;

@@ -7,6 +7,7 @@ players = []
 table = []
 cur_ass = ''
 used_cards = []
+main_player = 0
 
 #Создаем нового игрока с именем x
 def new_player(name, self):
@@ -46,18 +47,8 @@ def let_turn(user_id, isMain):
     return chosen_card
 
 #Голосование
-def all_vote(main_player):
-    for player in players:
-        if players.index(player) != main_player:
-            print(player['name'], ', choose card for vote: ', end = '')
-            player_vote = int(input())
-            while table[player_vote]['owner'] == players.index(player) :
-                print('You can`t vote for your own card')
-                print(player['name'], ', choose card for vote: ', end = '')
-                player_vote=int(input())
-                
-            table[player_vote]['votes'].append(players.index(player))
-
+def vote(card_id, user_id):
+    table[card_id]['votes'].append(user_id)
 
 #Подсчитываем очки
 def all_score(main_player):
@@ -87,7 +78,7 @@ def done_cards():
     if cards == []:
         for i in used_cards:
             cards.append(i)
-        used_cards = [] 
+        used_cards = []
            
  
     

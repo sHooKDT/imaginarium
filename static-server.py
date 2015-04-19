@@ -7,7 +7,8 @@ import json
 
 import logic
 
-from random import choice
+from random import choice, randint
+from time import sleep
 
 game_stage = 0
 # 0 - Lobby
@@ -17,17 +18,8 @@ game_stage = 0
 # 4 - Score
 
 ready_count = 0
-main_player = 0
 
 static_path = 'W:/Projects/Imaginarium/client/'
-
-"""def new_round():
-
-        
-        
-        if logic.main_player != len(players)-1:
-            logic.main_player += 1
-        else: logic.main_player = 0"""
 
 def all_ready():
     if game_stage == 1:
@@ -39,9 +31,25 @@ def all_ready():
     else: return True
     
 def change_stage(new_st):
+    global ready_count
+    global main_player
+    global table
+    
+    ready_count = 0
+
+    if new_st == 1: 
+        if logic.main_player != len(logic.players)-1:
+            logic.main_player += 1
+        else: logic.main_player = 0
+    elif new_st == 3:
+        shuffle(logic.table)
+    elif new_st == 4:
+        logic.all_score(logic.main_player)
+
+        
     for player in logic.players:
         
-        if players.index(player) == main_player:
+        if logic.players.index(player) == logic.main_player:
             isMain = True
         else:
             isMain = False
@@ -49,13 +57,14 @@ def change_stage(new_st):
         mes = json.dumps({
                 'type': 'status',
                 'stage': new_st,
-                'hand': player.user_hand,
+                'hand': player['user_hand'],
                 'main': isMain,
-                'table': [x.c_id for x in logic.table],
-                'score': [x.score for x in logic.players]
+                'table': [x['c_id'] for x in logic.table],
+                'score': [x['score'] for x in logic.players]
             })
+        player['socket'].write_message(mes)
 
-def indentify_client(id_socket):
+def identify_client(id_socket):
     for player in logic.players:
         if player['socket'] == id_socket: return logic.players.index(player)
     return False
@@ -74,24 +83,35 @@ class GameStarter(tornado.web.RequestHandler):
     
 
 class UserSocketsHandler(tornado.websocket.WebSocketHandler):
-    
-    global logic.cur_ass
+    global cur_ass
     
     def open(self):
         print(self)
 
     def on_message(self, message):
+        global ready_count
         data = json.loads(message)
         client_id = identify_client(self)
         if data['type'] == 'choice':
-            if game_stage == 1 and logic.players[main_player]['socket'] == self:
-                logic.put_card(data['choice'])
+            if game_stage == 1 and logic.players[logic.main_player]['socket'] == self:
+                logic.put_card(data['choice'], client_id)
                 logic.cur_ass = data['data']
                 change_stage(2)
+            elif game_stage == 2:
+                logic.put_card(data['choice'], client_id)
+                ready_count += 1
+                if all_ready(): change_stage(3)
+            elif game_stage == 3:
+                logic.vote(data['choice'], client_id)
+                ready_count += 1
+                if all_ready(): change_stage(4)
+                sleep(randint(7, 13))
+                if all_ready(): change_stage(1)
+                    
         elif data['type'] == 'join':
-            new_player(data['data'], self)
+            logic.new_player(data['data'], self)
 
-        else print('Incorrect request')
+        else: print('Incorrect request')
 
 application = tornado.web.Application([
     (r"/startgame", GameStarter),
@@ -101,6 +121,6 @@ application = tornado.web.Application([
 ])
 
 http_server = tornado.httpserver.HTTPServer(application)
-http_server.listen(8275)
+http_server.listen(8080)
 
 tornado.ioloop.IOLoop.instance().start()

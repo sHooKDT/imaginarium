@@ -1,4 +1,4 @@
-var gameSocket = new WebSocket('ws://localhost:8275/socket');
+var gameSocket = new WebSocket('ws://82.193.146.249:8080/socket');
 
 /*
 protocol = {
