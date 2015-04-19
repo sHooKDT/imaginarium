@@ -1,0 +1,45 @@
+class StartServer {
+
+	Turn game server on
+
+}
+
+class Lobby {
+
+	Waiting for signal (start button?)
+
+}
+
+class MainTurn {
+
+	Choosing main player
+
+    Send him type choice with main flag
+
+    Send others type waiting
+
+}
+
+class AllTurn {
+
+    Send all except main player type choice w/o main flag
+
+    Send type waiting for main player
+
+}
+
+class AllVote {
+
+	Send all type vote
+
+}
+
+StartServer -> Lobby: All is ready
+
+Lobby -> MainTurn: Request with type start
+
+MainTurn -> AllTurn: Ready player count eq 1
+
+AllTurn -> AllVote: Ready players count eq players count
+
+AllVote -> MainTurn: Ready players count eq players count
