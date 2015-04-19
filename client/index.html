@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Воображариум</title>
+    <link rel="icon" href="/res/favicon.ico" type="image/x-icon">
     <link type="text/css" rel="stylesheet" href="styles/main.css" />
     <link type="text/css" rel="stylesheet" href="styles/intro.css" />
     <link type="text/css" rel="stylesheet" href="styles/wait.css" />
@@ -28,37 +29,17 @@
             <div class="wait-text">Ожидание хода других игроков...</div>
         </div>
         <div class="sw-page page-main-turn map-on">
-            <input class="accept-but" style="display:none" type="text" placeholder="Подберите аѝѝоциацию к карте">
-            <div class="c_cards">
-                <div class="card" onclick="select_card(0)"></div>
-                <div class="card" onclick="select_card(1)"></div>
-                <div class="card" onclick="select_card(2)"></div>
-
-                <div class="card" onclick="select_card(3)"></div>
-                <div class="card" onclick="select_card(4)"></div>
-                <div class="card" onclick="select_card(5)"></div>
-            </div>
+            <input class="accept-but" style="display:none" type="text" placeholder="Подберите ассоциацию к карте">
             <div style="display:none" class="modal-accept">
                <div class="card_view"></div>
-                <input type="text" class="modal-ass" placeholder="С чем аѝѝоциируетѝѝ ѝта карта?"></input>
+                <input type="text" class="modal-ass" placeholder="С чем ассоциируется эта карта?"></input>
                 <div class="modal-but" onclick="turn_accept()">Принять</div>
                 <div class="close-modal-but" onclick="close_modal()"></div>
             </div>
         </div>
         <div class="sw-page page-turn map-on">
-            <div class="c_cards">
-                <div class="card"></div>
-                <div class="card"></div>
-                <div class="card"></div>
-                <div class="card"></div>
-                <div class="card"></div>
-                <div class="card"></div>
-            </div>
         </div>
         <div class="sw-page page-vote map-on">
-            <div class="c_cards">
-                <div class="card"></div>
-            </div>
         </div>
         <div class="sw-page page-score map-on">
 

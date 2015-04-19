@@ -1,44 +1,61 @@
-var gameSocket = new WebSocket('ws://82.193.146.249:8080/socket');
+var gameSocket = new WebSocket('ws://' + window.location.host + '/socket');
 
 /*
-protocol = {
-    type: 'status, choice, join',
-    choice: 'card_id',
-    data: 'text'
-}
 
 client = {
-  type: 'choice',
-  choice: ,
+  type: 'choice, join, start',
+  choice: 3,
   data: 'ass'
 }
 
 server = {
   type: 'status',
   stage: 'id',
-  isMain: false
+  isMain: false,
+  data:
 }
+
+'type': 'status',
+'stage': new_st,
+'hand': player['user_hand'],
+'main': isMain,
+'table': [x['c_id'] for x in logic.table],
+'score': [x['score'] for x in logic.players]
+
+
+# 0 - Lobby
+# 1 - Main turn
+# 2 - Players turn
+# 3 - Voting
+# 4 - Score
+
 */
 
 gameSocket.onopen = function () {
-   /* give_id = {
-        type: 'res_id'
-    }
-    gameSocket.send(JSON.stringify(give_id)) */
+  console.log('WebSocket Ready')
 }
 
 gameSocket.onmessage = function (event) {
     var data = JSON.parse(event.data)
-    switch(data.type) {
-        case 'id':
-            clientID = data.id;
-            break;
-        case 'status':
-            console.log(data.data);
-            break;
-    }
-}
+    if (data.type == 'status') {
+      switch (data.stage) {
+        case 0:
+          document.body.getElementsByClassName('intro-form').item(0).style.display = 'none';
+          document.body.getElementsByClassName('intro-text').item(0).style.display = 'block';
+        break;
+        case 1:
+          update_cards(data.hand)
+          if (data.main) {c_screen_to(main_turn)}
+        break;
+        case 2:
 
-function send_smth(smth) {
-    gameSocket.send(smth)
+        break;
+        case 3:
+
+        break;
+        case 4:
+
+        break;
+      }
+    }
 }
