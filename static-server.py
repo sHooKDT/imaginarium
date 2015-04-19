@@ -79,7 +79,9 @@ class MainPageHandler(tornado.web.RequestHandler):
 class GameStarter(tornado.web.RequestHandler):
     def get(self):
         print('Start game request received')
-        change_stage(1)
+        if game_stage == 0:
+            change_stage(1)
+        else: self.write('Igra uje zapushena, idi utsuda')
     
 
 class UserSocketsHandler(tornado.websocket.WebSocketHandler):
@@ -91,6 +93,7 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         global ready_count
         data = json.loads(message)
+        print(data)
         client_id = identify_client(self)
         if data['type'] == 'choice':
             if game_stage == 1 and logic.players[logic.main_player]['socket'] == self:
@@ -110,6 +113,15 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
                     
         elif data['type'] == 'join':
             logic.new_player(data['data'], self)
+            if game_stage == 0:
+                self.write_message(json.dumps({
+                        'type': 'status',
+                        'stage': 0
+                    }))
+
+        elif data['type'] == 'start':
+            print('Game started.')
+            change_stage(1)
 
         else: print('Incorrect request')
 
