@@ -1,52 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Воображариум</title>
-    <link rel="icon" href="/res/favicon.ico" type="image/x-icon">
-    <link type="text/css" rel="stylesheet" href="styles/main.css" />
-    <link type="text/css" rel="stylesheet" href="styles/intro.css" />
-    <link type="text/css" rel="stylesheet" href="styles/wait.css" />
-    <link type="text/css" rel="stylesheet" href="styles/turn.css" />
-    <script type="text/javascript" src="controller/main.js"></script>
-    <script type="text/javascript" src="controller/socket.js"></script>
+    <link rel="icon" href="/res/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+    <link rel="stylesheet" type="text/css" href="styles/lobby.css" />
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/socket.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/less.min.js"></script>
 </head>
 <body onload="initialise()">
-    <div class="page-container">
-        <div class="sw-page page-lobby">
-            <div class="logo"></div>
-            <div class="intro-form">
-                <input class="intro-name" id="player-name" type="text" placeholder="Введите свое имя..." />
-                <div class="intro-accept" onclick="join_game()"></div>
-            </div>
-            <div class="intro-text" style="display:none">
-                <h2>Ждем подключениѝ других игроков</h2>
-                <h3>0/3 уже здесь</h3>
-            </div>
-        </div>
-        <div class="sw-page page-wait map-on">
-            <div class="logo"></div>
-            <div class="wait-text">Ожидание хода других игроков...</div>
-        </div>
-        <div class="sw-page page-main-turn map-on">
-            <input class="accept-but" style="display:none" type="text" placeholder="Подберите ассоциацию к карте">
-            <div style="display:none" class="modal-accept">
-               <div class="card_view"></div>
-                <input type="text" class="modal-ass" placeholder="С чем ассоциируется эта карта?"></input>
-                <div class="modal-but" onclick="turn_accept()">Принять</div>
-                <div class="close-modal-but" onclick="close_modal()"></div>
+    <section class="page-lobby">
+        <div class="page-lobby-logo"></div>
+        <div class="page-lobby-dcontainer">
+            <div class="page-lobby-dcontainer-plcountext">10 игроков в игре</div>
+            <div class="page-lobby-dcontainer-gstatustext">Игра еще не началась</div>
+            <div class="page-lobby-dcontainer-join">
+                <div class="page-lobby-dcontainer-join-big">JOIN</div>
+                <div class="page-lobby-dcontainer-join-ninput"></div>
+                <div class="page-lobby-dcontainer-join-jbutton"></div>
             </div>
         </div>
-        <div class="sw-page page-turn map-on">
-        </div>
-        <div class="sw-page page-vote map-on">
-        </div>
-        <div class="sw-page page-score map-on">
-
-        </div>
-        <div class="map-bar">
-            <!--      INSERT PLAYER ICONS HERE      -->
-        </div>
-    </div>
+    </section>
+    <section></section>
+    <section></section>
+    <section></section>
+    <section></section>
+    <section></section>
+    
+    <footer></footer>
 </body>
 </html>

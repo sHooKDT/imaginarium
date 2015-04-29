@@ -1,0 +1,66 @@
+@font-face {
+    font-family: "AnfisaGroteskRegular";
+    src: url("../res/fonts/AnfisaGroteskRegular/AnfisaGroteskRegular.eot");
+    src: url("../res/fonts/AnfisaGroteskRegular/AnfisaGroteskRegular.eot?#iefix")format("embedded-opentype"), url("../res/fonts/AnfisaGroteskRegular/AnfisaGroteskRegular.woff") format("woff"), url("../res/fonts/AnfisaGroteskRegular/AnfisaGroteskRegular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+.page-lobby-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: 750px;
+    height: 100%;
+    max-height: 350px;
+    z-index: 1;
+    margin: 10% auto;
+    background: #b0c360
+}
+
+.page-lobby-dcontainer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 600px;
+    min-width: 480px;
+    height: 200px;
+    z-index: 1;
+    margin: auto auto 5%;
+    background: #c8f8ef
+}
+
+.page-lobby-dcontainer-plcountext {
+    font-size: 24pt;
+    margin: 40px;
+}
+
+.page-lobby-dcontainer-gstatustext {
+    font-size: 24pt;
+    margin: calc(70px + 24pt) 40px;
+}
+
+.page-lobby-dcontainer-join {
+    width: 200px;
+    height: 200px;
+    top: 0; right: 0;
+    background: #ededed;
+    cursor: pointer;
+}
+
+.page-lobby-dcontainer-join-big {
+    left: 0; right: 0; bottom: 0; top: 0;
+    font-size: 64pt;
+    width: 150px;
+    height: 120px;
+    margin: auto;
+}
+
+.page-lobby-dcontainer-join:hover {
+    background: #e2e2e2;
+}
