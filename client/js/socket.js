@@ -39,23 +39,21 @@ gameSocket.onmessage = function (event) {
     var data = JSON.parse(event.data)
     if (data.type == 'status') {
       switch (data.stage) {
-        case 0:
-          document.body.getElementsByClassName('intro-form').item(0).style.display = 'none';
-          document.body.getElementsByClassName('intro-text').item(0).style.display = 'block';
-        break;
-        case 1:
-          update_cards(data.hand)
-          if (data.main) {c_screen_to(main_turn)}
-        break;
-        case 2:
-
-        break;
-        case 3:
-
-        break;
-        case 4:
-
-        break;
+          default:
+            console.log(data)
+            break
       }
     }
+}
+
+function send(mes) {
+    gameSocket.send(JSON.stringify(mes))
+}
+
+function join() {
+    var name = document.body.getElementsByClassName('page-lobby-dcontainer-join-form-ninput').item(0).nodeValue
+    send({
+        type: 'join',
+        data: name
+    })
 }
