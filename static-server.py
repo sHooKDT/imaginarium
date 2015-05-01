@@ -24,7 +24,9 @@ game_stage = 0
 ready_count = 0
 
 # Полный путь до папки client
-static_path = 'W:/Projects/Imaginarium/client/'
+#static_path = 'W:/Projects/Imaginarium/client/'
+# Второй полный путь до папки client
+static_path = 'C:/Python32/progs/imaginarium/client/'
 
 # Проверка готовности всех игроков на стадии
 def all_ready():
@@ -92,6 +94,12 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
 
     def open(self):
         print('Websocket is ready.')
+        self.write_message(json.dumps({
+             'type' : 'join',
+             'players': len(logic.players),
+             'stage': game_stage,
+             
+             }))
 
     def on_message(self, message):
         global ready_count
@@ -136,6 +144,6 @@ application = tornado.web.Application([
 ])
 
 http_server = tornado.httpserver.HTTPServer(application)
-http_server.listen(80)
+http_server.listen(8888)
 
 tornado.ioloop.IOLoop.instance().start()
