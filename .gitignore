@@ -58,3 +58,5 @@ target/
 
 # Other
 .idea/
+prepros.cfg
+*.sublime-workspace

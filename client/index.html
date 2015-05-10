@@ -12,14 +12,14 @@
 <body ng-controller="page-switcher" ng-switch on="activepage">
     <section ng-switch-when="page-lobby" class="page-lobby">
         <div class="page-lobby-logo"></div>
-        <div class="page-lobby-dcontainer">
-            <div class="page-lobby-dcontainer-plcountext">{{ pcount }} игроков в игре</div>
+        <div ng-controller="player-join" class="page-lobby-dcontainer">
+            <div class="page-lobby-dcontainer-plcountext">{{playerscount}} игроков в игре</div>
             <div class="page-lobby-dcontainer-gstatustext">Игра еще не началась</div>
             <div class="page-lobby-dcontainer-join">
-                <div class="page-lobby-dcontainer-join-big">JOIN</div>
-                <div class="page-lobby-dcontainer-join-form">
-                    <input class="page-lobby-dcontainer-join-form-ninput" placeholder="Как вас зовут?"/>
-                    <div class="page-lobby-dcontainer-join-form-jbutton" onclick="join()">READY</div>
+                <div ng-show="!formvisible" ng-click="formvisible=1" class="page-lobby-dcontainer-join-big">JOIN</div>
+                <div ng-show="formvisible" class="page-lobby-dcontainer-join-form">
+                    <input ng-model="playername" class="page-lobby-dcontainer-join-form-ninput" placeholder="Как вас зовут?"/>
+                    <div ng-click="joingame()" class="page-lobby-dcontainer-join-form-jbutton">READY</div>
                 </div>
             </div>
         </div>
