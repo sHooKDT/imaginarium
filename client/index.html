@@ -1,37 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="imaginarium">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Воображариум</title>
-    <link rel="icon" href="/res/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="styles/main.css" />
-    <link rel="stylesheet" type="text/css" href="styles/lobby.css" />
-    <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/socket.js"></script>
-    <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/less.min.js"></script>
+    <link rel="icon" href="res/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="styles/lobby.css">
+    <script src="js/angular.min.js"></script>
+    <script src="js/main.js"></script>
 </head>
-<body onload="initialise()">
-    <section class="page-lobby">
+<body ng-controller="page-switcher" ng-switch on="activepage">
+    <section ng-switch-when="page-lobby" class="page-lobby">
         <div class="page-lobby-logo"></div>
         <div class="page-lobby-dcontainer">
-            <div class="page-lobby-dcontainer-plcountext">10 игроков в игре</div>
+            <div class="page-lobby-dcontainer-plcountext">{{ pcount }} игроков в игре</div>
             <div class="page-lobby-dcontainer-gstatustext">Игра еще не началась</div>
             <div class="page-lobby-dcontainer-join">
                 <div class="page-lobby-dcontainer-join-big">JOIN</div>
                 <div class="page-lobby-dcontainer-join-form">
                     <input class="page-lobby-dcontainer-join-form-ninput" placeholder="Как вас зовут?"/>
-                    <div class="page-lobby-dcontainer-join-form-jbutton" onclick="join()">READY</div>    
+                    <div class="page-lobby-dcontainer-join-form-jbutton" onclick="join()">READY</div>
                 </div>
             </div>
         </div>
     </section>
-    <section></section>
-    <section></section>
-    <section></section>
-    <section></section>
-    <section></section>
-    
-    <footer></footer>
+    <section ng-switch-when="page-main-turn" class="page-main-turn">Страница хода главного</section>
+    <section ng-switch-when="page-turn" class="page-turn">Страница хода</section>
+    <section ng-switch-when="page-vote" class="page-vote">Страница голосования</section>
+    <section ng-switch-when="page-score" class="page-score">Страница счета</section>
+    <section ng-switch-when="page-wait" class="page-wait">Страница ожидания</section>
+</div>
+<footer>
+<select ng-model="activepage" ng-options="item for item in pages" class="page-selector">
+</footer>
 </body>
 </html>

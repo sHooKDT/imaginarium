@@ -23,20 +23,24 @@ game_stage = 0
 # Игроки в ожидании
 ready_count = 0
 
-# Полный путь до папки client
-#static_path = 'W:/Projects/Imaginarium/client/'
-# Второй полный путь до папки client
-static_path = 'C:/Python32/progs/imaginarium/client/'
+static_path = 'W:/Projects/Imaginarium/client/'
+# static_path = 'C:/Python32/progs/imaginarium/client/'
 
 # Проверка готовности всех игроков на стадии
 def all_ready():
     if game_stage == 1:
-        if ready_count == 1: return True
-        else: return False
+        if ready_count == 1:
+            return True
+        else:
+            return False
     elif game_stage in [2, 3]:
-        if ready_count == len(logic.players) - 1: return True
-        else: return False
-    else: return True
+        if ready_count == len(logic.players) - 1:
+            return True
+        else:
+            return False
+    else:
+        return True
+
 
 # Меняем стадию и рассылаем данные клиентам
 def change_stage(new_st):
@@ -49,9 +53,10 @@ def change_stage(new_st):
 
     # Дополнительные действия для стадий
     if new_st == 1:
-        if logic.main_player != len(logic.players)-1:
+        if logic.main_player != len(logic.players) - 1:
             logic.main_player += 1
-        else: logic.main_player = 0
+        else:
+            logic.main_player = 0
     elif new_st == 3:
         shuffle(logic.table)
     elif new_st == 4:
@@ -66,20 +71,22 @@ def change_stage(new_st):
             isMain = False
 
         mes = json.dumps({
-                'type': 'status',
-                'stage': new_st,
-                'hand': player['user_hand'],
-                'main': isMain,
-                'table': [x['c_id'] for x in logic.table],
-                'score': [x['score'] for x in logic.players]
-            })
+            'type': 'status',
+            'stage': new_st,
+            'hand': player['user_hand'],
+            'main': isMain,
+            'table': [x['c_id'] for x in logic.table],
+            'score': [x['score'] for x in logic.players]
+        })
         player['socket'].write_message(mes)
+
 
 # Возвращает id игрока по сокеты клиента
 def identify_client(id_socket):
     for player in logic.players:
         if player['socket'] == id_socket: return logic.players.index(player)
     return False
+
 
 # Рассылка главной страницы
 class MainPageHandler(tornado.web.RequestHandler):
@@ -88,6 +95,7 @@ class MainPageHandler(tornado.web.RequestHandler):
         page = open(static_path + 'index.html', encoding='utf8').read()
         self.write(page)
 
+
 # Обработчик запросов клиентов
 class UserSocketsHandler(tornado.websocket.WebSocketHandler):
     global cur_ass
@@ -95,11 +103,11 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
     def open(self):
         print('Websocket is ready.')
         self.write_message(json.dumps({
-             'type' : 'join',
-             'players': len(logic.players),
-             'stage': game_stage,
-             
-             }))
+            'type': 'join',
+            'players': len(logic.players),
+            'stage': game_stage,
+
+        }))
 
     def on_message(self, message):
         global ready_count
@@ -127,15 +135,17 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
             logic.new_player(data['data'], self)
             if game_stage == 0:
                 self.write_message(json.dumps({
-                        'type': 'status',
-                        'stage': 0
-                    }))
+                    'type': 'status',
+                    'stage': 0
+                }))
 
         elif data['type'] == 'start':
             print('Someone is trying to start the game. Starting...')
             change_stage(1)
 
-        else: print('Incorrect request')
+        else:
+            print('Incorrect request')
+
 
 application = tornado.web.Application([
     (r"/", MainPageHandler),
@@ -144,6 +154,8 @@ application = tornado.web.Application([
 ])
 
 http_server = tornado.httpserver.HTTPServer(application)
-http_server.listen(8888)
 
+server_port = 80
+print('Imaginarium game server started on port: ' + str(server_port))
+http_server.listen(server_port)
 tornado.ioloop.IOLoop.instance().start()

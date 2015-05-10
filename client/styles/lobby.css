@@ -17,7 +17,7 @@
     max-height: 350px;
     z-index: 1;
     margin: 10% auto;
-    background: #b0c360
+    background: url('../res/logo.svg') no-repeat auto
 }
 
 .page-lobby-dcontainer {
@@ -32,7 +32,8 @@
     height: 200px;
     z-index: 1;
     margin: auto auto 5%;
-    background: #c8f8ef
+    background: #E5A871;
+    border-radius: 10px;
 }
 
 .page-lobby-dcontainer-plcountext {
@@ -78,6 +79,11 @@
     padding: 0;
     font-size: 18pt;
     text-align: center;
+    background: #E8C5A6;
+    border-top-right-radius: 10px;
+}
+.page-lobby-dcontainer-join-form-ninput:focus {
+    background: #EED7C4;
 }
 .page-lobby-dcontainer-join-form-jbutton {
     background-color: bisque;
@@ -85,7 +91,9 @@
     height: calc(100% - 50px);
     bottom: 0;
     text-align: center;
-    padding-t0px;
+    font-size: 54pt;
+    padding: 0;
+    border-bottom-right-radius: 10px
 }
 .page-lobby-dcontainer-join-form-jbutton:hover {
     background: #ffddb4

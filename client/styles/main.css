@@ -16,10 +16,10 @@ div, section, footer {
     outline: 0;    
 }
 section {
-    top: 0;
+    top: 0; bottom: 0; left: 0; right: 0;
     width: 100%;
-    height: 95%;
-    background-color: #78efff    
+    height: 100%;
+    background-color: #FFFFFF;
 }
 footer {
     position: fixed;
@@ -27,5 +27,18 @@ footer {
     bottom: 0;
     width: 100%;
     height: 5%;
-    background: #256a89;
+    background: #DBB38F;
+}
+.page-lobby-logo {
+    background: url('../res/logo.svg') no-repeat 50% 50%;
+}
+.page-selector {
+    height: 100%;
+    background: #F3CFA5;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+.page-selector:focus {
+    box-shadow: 0;
+    border: 1px dashed black;
 }
