@@ -1,4 +1,4 @@
-var IGame = angular.module('imaginarium', []);
+var IGame = angular.module('imaginarium', ['ngAnimate']);
 
 IGame.controller('page-switcher', function($scope) {
 
@@ -9,10 +9,12 @@ IGame.controller('page-switcher', function($scope) {
  })
 
 IGame.controller('player-join', function($scope) {
+
 	$scope.playername = '';
     $scope.formvisible = false;
 
     $scope.joingame = function () {
     	console.log('Player wants to join game with name ' + $scope.playername)
     }
+
 })

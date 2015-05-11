@@ -19,7 +19,7 @@ section {
     top: 0; bottom: 0; left: 0; right: 0;
     width: 100%;
     height: 100%;
-    background-color: #FFFFFF;
+    background-color: #FFF;
 }
 footer {
     position: fixed;
@@ -42,3 +42,18 @@ footer {
     box-shadow: 0;
     border: 1px dashed black;
 }
+.page-minimap {
+    right: 0; top: 0;
+    z-index: 2;
+    width: 15%;
+    height: 95%;
+    background: #000;
+}
+.page-minimap.ng-hide-add.ng-hide-add-active,
+.page-minimap.ng-hide-remove.ng-hide-remove-active {
+    transition: width linear 0.3s;
+}
+
+.page-minimap.ng-hide {
+    width: 0;
+} 
