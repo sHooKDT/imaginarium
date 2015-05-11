@@ -81,6 +81,17 @@
     background-color: azure;
 }
 
+.join-form-animate {
+    opcatity: 1;
+}
+.join-form-animate.ng-hide-add.ng-hide-add-active,
+.join-form-animate.ng-hide-remove.ng-hide-remove-active {
+    transition: opacity linear 0.2s;
+}
+.join-form-animate.ng-hide {
+    opacity: 0;
+}
+
 /* Input field */
 .page-lobby-dcontainer-join-form-ninput {
     width: 100%;
