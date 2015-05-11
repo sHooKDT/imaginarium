@@ -1,3 +1,4 @@
+/* Custom font */
 @font-face {
     font-family: "AnfisaGroteskRegular";
     src: url("../res/fonts/AnfisaGroteskRegular/AnfisaGroteskRegular.eot");
@@ -6,6 +7,7 @@
     font-weight: normal;
 }
 
+/* Central logo at lobby page */
 .page-lobby-logo {
     position: absolute;
     top: 0;
@@ -17,9 +19,10 @@
     max-height: 350px;
     z-index: 1;
     margin: 10% auto;
-    background: url('../res/logo.svg') no-repeat auto
+    background: url('../res/logo.svg') no-repeat 50% 50%
 }
 
+/* Info container styles (big box) */
 .page-lobby-dcontainer {
     position: absolute;
     top: 0;
@@ -37,6 +40,7 @@
     overflow: hidden;
 }
 
+/* Left labels */
 .page-lobby-dcontainer-plcountext {
     font-size: 24pt;
     margin: 40px;
@@ -47,6 +51,7 @@
     margin: calc(70px + 24pt) 40px;
 }
 
+/* Join buttons container */
 .page-lobby-dcontainer-join {
     width: 200px;
     height: 200px;
@@ -55,6 +60,7 @@
     cursor: pointer;
 }
 
+/* Big join button */
 .page-lobby-dcontainer-join-big {
 
     font-size: 64pt;
@@ -64,15 +70,18 @@
     text-align: center;
 
 }
-
 .page-lobby-dcontainer-join:hover {
     background: #e2e2e2;
 }
+
+/* Join form container */
 .page-lobby-dcontainer-join-form {
     height: 100%;
     width: 100%;
     background-color: azure;
 }
+
+/* Input field */
 .page-lobby-dcontainer-join-form-ninput {
     width: 100%;
     height: 50px;
@@ -86,6 +95,8 @@
 .page-lobby-dcontainer-join-form-ninput:focus {
     background: #EED7C4;
 }
+
+/* Small join button in form */
 .page-lobby-dcontainer-join-form-jbutton {
     background-color: bisque;
     width: 100%;

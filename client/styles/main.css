@@ -1,3 +1,4 @@
+/* Main blocks style */
 html, body {
     position: absolute;
     display: block;
@@ -29,9 +30,8 @@ footer {
     height: 5%;
     background: #DBB38F;
 }
-.page-lobby-logo {
-    background: url('../res/logo.svg') no-repeat 50% 50%;
-}
+
+/* Page selector in footer */
 .page-selector {
     height: 100%;
     background: #F3CFA5;
@@ -42,6 +42,8 @@ footer {
     box-shadow: 0;
     border: 1px dashed black;
 }
+
+/* Minimap style and animation */
 .page-minimap {
     right: 0; top: 0;
     z-index: 2;
@@ -53,7 +55,6 @@ footer {
 .page-minimap.ng-hide-remove.ng-hide-remove-active {
     transition: width linear 0.3s;
 }
-
 .page-minimap.ng-hide {
     width: 0;
 } 
