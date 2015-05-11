@@ -23,8 +23,7 @@ game_stage = 0
 # Игроки в ожидании
 ready_count = 0
 
-static_path = 'W:/Projects/Imaginarium/client/'
-# static_path = 'C:/Python32/progs/imaginarium/client/'
+static_path = 'client/'
 
 # Проверка готовности всех игроков на стадии
 def all_ready():
