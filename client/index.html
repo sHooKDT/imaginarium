@@ -7,11 +7,13 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css">
     <link rel="stylesheet" type="text/css" href="styles/lobby.css">
     <link rel="stylesheet" type="text/css" href="styles/turn.css">
+    <link rel="stylesheet" type="text/css" href="styles/table.css">
     <script src="js/external/angular.min.js"></script>
     <script src="js/external/angular-animate.min.js"></script>
     <script src="js/main.js"></script>
 </head>
 <body ng-controller="page-switcher" ng-switch on="activepage">
+    <style ng-if="showminimap">section{width: 85%}</style>
     <section ng-switch-when="page-lobby" class="page-lobby">
         <div class="page-lobby-logo"></div>
         <div ng-controller="player-join" class="page-lobby-dcontainer">
@@ -26,22 +28,32 @@
             </div>
         </div>
     </section>
-    <section ng-switch-when="page-main-turn" class="page-main-turn">
-        <div class="page-main-turn-top-bar">Выбери одну из своих карт:</div>
-        <div class="page-main-turn-hand-container" ng-controller="card-controller">
+    <section ng-controller="turn-controller" ng-switch-when="page-turn" class="page-turn">
+        <div class="page-turn-top-bar">Выбери одну из своих карт:</div>
+        <div class="page-turn-hand-container">
             <div ng-repeat="card in cards track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="clickcard($index)" class="hand-card"></div>
         </div>
+        <div ng-show="overlayon" class="page-turn-overlay">
+            <div class="page-turn-overlay-layer"></div>
+            <div class="page-turn-overlay-ass-box">
+                <input ng-model="cardass" placeholder="Введите свою ассоциацию..." class="page-turn-ass-text" />
+                <div ng-click="choice()" class="page-turn-ass-accept"></div>
+            </div>
+                </div>
     </section>
-    <section ng-switch-when="page-turn" class="page-turn">Страница хода</section>
-    <section ng-switch-when="page-vote" class="page-vote">Страница голосования</section>
+    <section ng-controller="vote-controller" ng-switch-when="page-vote" class="page-vote">
+        <div class="page-vote-top-bar">Какая карта больше всего похожа на {{ cardass }}? :</div>
+        <div class="page-vote-table-container">
+            <div ng-repeat="card in table track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="clickcard($index)" class="table-card"></div>
+        </div>
+    </section>
     <section ng-switch-when="page-score" class="page-score">Страница счета</section>
-    <section ng-switch-when="page-wait" class="page-wait">Страница ожидания</section>
-</div>
-<div ng-show="showminimap" class="page-minimap"></div>
-<footer>
-<select ng-model="activepage" ng-options="item for item in pages" class="page-selector">
-<label><input ng-model="showminimap" type="checkbox">Show minimap</label>
-<style ng-if="showminimap">section{width: 85%}</style>
-</footer>
+    <section ng-switch-when="page-wait" class="page-wait">nothing happens...</section>
+    </div>
+    <div ng-show="showminimap" class="page-minimap"></div>
+    <footer>
+    <select ng-model="activepage" ng-options="item for item in pages" class="page-selector">
+    <label><input ng-model="showminimap" type="checkbox">Show minimap</label>
+    </footer>
 </body>
 </html>

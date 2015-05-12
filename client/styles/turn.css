@@ -1,4 +1,5 @@
-.page-main-turn-top-bar {
+/* Turn page markup */
+.page-turn-top-bar {
 	top: 0; left: 0;
 	height: 50px;
 	width: 100%;
@@ -6,7 +7,7 @@
 	text-align: center;
 	line-height: 50px;
 }
-.page-main-turn-hand-container {
+.page-turn-hand-container {
 	bottom: 0; left: 0;
 	display: flex;
 	float: left;
@@ -21,4 +22,39 @@
 	background-repeat: no-repeat;
 	background-size: contain;
 	cursor: pointer;
+}
+
+/* Overlay settings */
+.page-turn-overlay {
+	top: 0; right: 0; bottom: 0; left: 0;
+	width: 100%;
+	height: 100%;
+}
+.page-turn-overlay-layer {
+	top: 0; right: 0; bottom: 0; left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.8;
+}
+.page-turn-overlay-ass-box {
+	top: 0; left: 0; right: 0; bottom: 0;
+	width: 60%; height: 100px;
+	margin: auto;
+	opacity: 1;
+	background: snow;
+}
+.page-turn-ass-text {
+	width: calc(100% - 100px); height: 100%;
+	left: 0;
+	display: block; padding: 0; margin: 0; outline: 0; border: 0; position: absolute;
+}
+.page-turn-ass-accept {
+	width: 100px; height: 100%;
+	right: 0;
+	background: red;
+	cursor: pointer;
+}
+.page-turn-ass-accept:hover {
+	background: #A00;
 }

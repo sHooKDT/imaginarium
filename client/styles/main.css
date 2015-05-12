@@ -14,7 +14,8 @@ div, section, footer {
     display: block;
     padding: 0;
     margin: 0;
-    outline: 0;    
+    outline: 0;
+    border: 0;
 }
 section {
     top: 0; bottom: 0; left: 0; right: 0;
