@@ -4,7 +4,7 @@ IGame.controller('page-switcher', function($scope) {
 
     $scope.playerscount = 7;
     $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-main-turn', 'page-vote', 'page-score'];
-    $scope.activepage = $scope.pages[0];
+    $scope.activepage = $scope.pages[3];
 
  })
 
@@ -16,5 +16,15 @@ IGame.controller('player-join', function($scope) {
     $scope.joingame = function () {
     	console.log('Player wants to join game with name ' + $scope.playername)
     }
+
+})
+
+IGame.controller('card-controller', function($scope) {
+
+	$scope.cards = [0, 44, 72, 144, 2, 1]
+
+	$scope.clickcard = function (c_id) {
+		console.log('Player chosen card with id: ' + c_id)
+	}
 
 })

@@ -101,8 +101,9 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
 
     def open(self):
         print('Websocket is ready.')
+        # Посылаем информацию о лобби
         self.write_message(json.dumps({
-            'type': 'join',
+            'type': 'lobby',
             'players': len(logic.players),
             'stage': game_stage,
 

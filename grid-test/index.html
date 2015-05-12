@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="imaginarium">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Воображариум</title>
+    <link rel="icon" href="res/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="styles/lobby.css">
+    <link rel="stylesheet" type="text/css" href="styles/main-turn.css">
+    <script src="js/external/angular.min.js"></script>
+    <script src="js/external/angular-animate.min.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body ng-controller="page-switcher" ng-switch on="activepage">
+    <section ng-switch-when="page-lobby" class="page-lobby">
+        <div class="page-lobby-logo"></div>
+        <div ng-controller="player-join" class="page-lobby-dcontainer">
+            <div class="page-lobby-dcontainer-plcountext">{{playerscount}} игроков в игре</div>
+            <div class="page-lobby-dcontainer-gstatustext">Игра еще не началась</div>
+            <div ng-click="formvisible=1" class="page-lobby-dcontainer-join">
+                <div ng-show="!formvisible" class="page-lobby-dcontainer-join-big join-form-animate">JOIN</div>
+                <div ng-show="formvisible" class="page-lobby-dcontainer-join-form join-form-animate">
+                    <input ng-model="playername" class="page-lobby-dcontainer-join-form-ninput" placeholder="Как вас зовут?"/>
+                    <div ng-click="joingame()" class="page-lobby-dcontainer-join-form-jbutton">READY</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section ng-switch-when="page-main-turn" class="page-main-turn">
+        <div class="page-main-turn-top-bar"></div>
+        <div class="page-main-turn-hand"></div>
+    </section>
+    <section ng-switch-when="page-turn" class="page-turn">Страница хода</section>
+    <section ng-switch-when="page-vote" class="page-vote">Страница голосования</section>
+    <section ng-switch-when="page-score" class="page-score">Страница счета</section>
+    <section ng-switch-when="page-wait" class="page-wait">Страница ожидания</section>
+</div>
+<div ng-show="showminimap" class="page-minimap"></div>
+<footer>
+<select ng-model="activepage" ng-options="item for item in pages" class="page-selector">
+<label><input ng-model="showminimap" type="checkbox">Show minimap</label>
+<style ng-if="showminimap">section{width: 85%}</style>
+</footer>
+</body>
+</html>

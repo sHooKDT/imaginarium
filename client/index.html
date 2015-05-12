@@ -6,7 +6,7 @@
     <link rel="icon" href="res/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="styles/main.css">
     <link rel="stylesheet" type="text/css" href="styles/lobby.css">
-    <link rel="stylesheet" type="text/css" href="styles/main-turn.css">
+    <link rel="stylesheet" type="text/css" href="styles/turn.css">
     <script src="js/external/angular.min.js"></script>
     <script src="js/external/angular-animate.min.js"></script>
     <script src="js/main.js"></script>
@@ -27,8 +27,10 @@
         </div>
     </section>
     <section ng-switch-when="page-main-turn" class="page-main-turn">
-        <div class="page-main-turn-top-bar"></div>
-        <div class="page-main-turn-hand"></div>
+        <div class="page-main-turn-top-bar">Выбери одну из своих карт:</div>
+        <div class="page-main-turn-hand-container" ng-controller="card-controller">
+            <div ng-repeat="card in cards track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="clickcard($index)" class="hand-card"></div>
+        </div>
     </section>
     <section ng-switch-when="page-turn" class="page-turn">Страница хода</section>
     <section ng-switch-when="page-vote" class="page-vote">Страница голосования</section>
