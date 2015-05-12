@@ -1,6 +1,6 @@
 var IGame = angular.module('imaginarium', ['ngAnimate'])
 
-
+// Page switcher controller
 IGame.controller('page-switcher', function($scope) {
 
 	example_scope = $scope
