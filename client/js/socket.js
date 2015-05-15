@@ -1,61 +1,62 @@
-/* var gameSocket = new WebSocket('ws://' + window.location.host + '/socket');
+IGame.factory('gameData', function ($websocket) {
 
+    var gameSocket = $websocket('ws://' + location.host + '/socket');
 
+    var gameState = {
+        stage: 0,
+        hand: [],
+        main: false,
+        table: [],
+        score: [],
+        pcount: 0
+    };
 
- client = {
- type: 'choice, join, start',
- choice: 3,
- data: 'ass'
- }
-
- server = {
- type: 'status',
- stage: 'id',
- isMain: false,
- data:
- }
-
- 'type': 'status',
- 'stage': new_st,
- 'hand': player['user_hand'],
- 'main': isMain,
- 'table': [x['c_id'] for x in logic.table],
- 'score': [x['score'] for x in logic.players]
-
-
- # 0 - Lobby
- # 1 - Main turn
- # 2 - Players turn
- # 3 - Voting
- # 4 - Score
-
- 
-
-gameSocket.onopen = function () {
-    console.log('WebSocket Ready')
-}
-
-gameSocket.onmessage = function (event) {
-    var data = JSON.parse(event.data)
-    if (data.type == 'status') {
-        switch (data.stage) {
-            default:
-                console.log(data)
-                break
+    gameSocket.onMessage(function (mes) {
+        var data = JSON.parse(mes.data);
+        console.log(mes)
+        console.log(data)
+        if (data.type == 'status') {
+            gameState.stage = data.stage;
+            gameState.hand = data.hand;
+            gameState.main = data.main;
+            gameState.table = data.table;
+            gameState.score = data.score;
+            gameState.association = data.association
         }
+        else {
+            if (data.type == 'lobby') {
+                //noinspection CommaExpressionJS
+                gameState.pcount = data.pcount,
+                    gameState.stage = data.stage
+            }
+        }
+    });
+
+    function send_choice(c_id, ass) {
+        gameSocket.send(JSON.stringify({
+            type: 'choice',
+            choice: c_id,
+            data: ass
+        }))
     }
-}
 
-function send(mes) {
-    gameSocket.send(JSON.stringify(mes))
-}
+    function join_game(name) {
+        gameSocket.send(JSON.stringify({
+            type: 'join',
+            data: name
+        }))
+    }
 
-function join() {
-    var name = document.body.getElementsByClassName('page-lobby-dcontainer-join-form-ninput').item(0).nodeValue
-    send({
-        type: 'join',
-        data: name
-    })
-}
+    function start_game() {
+        gameSocket.send(JSON.stringify({
+            type: 'start'
+        }))
+    }
 
- */
+    return {
+        gameState,
+        send_choice: send_choice,
+        join_game: join_game,
+        start_game: start_game
+    }
+});

@@ -37,6 +37,8 @@ footer {
     height: 100%;
     background: #F3CFA5;
     -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 1px solid transparent;
     cursor: pointer;
 }
 .page-selector:focus {

@@ -20,6 +20,8 @@ game_stage = 0
 # 3 - Voting
 # 4 - Score
 
+round_num = 1
+
 # Игроки в ожидании
 ready_count = 0
 
@@ -46,6 +48,7 @@ def change_stage(new_st):
     global ready_count
     global main_player
     global table
+    global round_num
 
     # Обнуляем готовность игроков
     ready_count = 0
@@ -56,6 +59,13 @@ def change_stage(new_st):
             logic.main_player += 1
         else:
             logic.main_player = 0
+
+        if round_num == 1:
+            logic.give_cards(6)
+        else:
+            logic.give_cards(1)
+        round_num += 1
+
     elif new_st == 3:
         shuffle(logic.table)
     elif new_st == 4:
@@ -75,7 +85,8 @@ def change_stage(new_st):
             'hand': player['user_hand'],
             'main': isMain,
             'table': [x['c_id'] for x in logic.table],
-            'score': [x['score'] for x in logic.players]
+            'score': [x['score'] for x in logic.players],
+            'association': logic.cur_ass
         })
         player['socket'].write_message(mes)
 
@@ -104,7 +115,7 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
         # Посылаем информацию о лобби
         self.write_message(json.dumps({
             'type': 'lobby',
-            'players': len(logic.players),
+            'pcount': len(logic.players),
             'stage': game_stage,
 
         }))
@@ -112,7 +123,7 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         global ready_count
         data = json.loads(message)
-        print(logic.players[identify_client(self)].name + ' is sending data: ' + data)
+        # print(logic.players[identify_client(self)].name + ' is sending data: ' + data)
         client_id = identify_client(self)
         if data['type'] == 'choice':
             if game_stage == 1 and logic.players[logic.main_player]['socket'] == self:
@@ -136,7 +147,12 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
             if game_stage == 0:
                 self.write_message(json.dumps({
                     'type': 'status',
-                    'stage': 0
+                    'stage': 0,
+                    'hand': [],
+                    'main': False,
+                    'table': [],
+                    'score': [],
+                    'association': ''
                 }))
 
         elif data['type'] == 'start':

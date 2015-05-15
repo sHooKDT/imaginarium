@@ -1,52 +1,48 @@
-var IGame = angular.module('imaginarium', ['ngAnimate'])
+var IGame = angular.module('imaginarium', ['ngAnimate', 'ngWebSocket']);
 
-// Page switcher controller
-IGame.controller('page-switcher', function($scope) {
+var gamestate = undefined;
 
-	example_scope = $scope
-    $scope.playerscount = 7;
+IGame.controller('game-controller', function ($scope, gameData) {
+
+	gamestate = gameData
+	gamescope = $scope
+
+	$scope.activepage = 0
+
+    /* Page switcher*/
+    //$scope.playerscount = gameData.data.pcount;
     $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-vote', 'page-score'];
-    $scope.activepage = $scope.pages[3];
+    // $scope.activepage = $scope.pages[0];
 
- })
-
-IGame.controller('player-join', function($scope) {
-
-	$scope.playername = '';
+    /* Join form control */
+    $scope.playername = '';
     $scope.formvisible = false;
 
-    $scope.joingame = function () {
-    	console.log('Player wants to join game with name ' + $scope.playername)
+    $scope.join = function () {
+    	gameData.join_game($scope.playername)
     }
 
-})
+    /* Turn controller */
+    //$scope.hand = gameData.data.hand;
+    $scope.selectedcard = undefined;
+    $scope.overlayon = false;
+    //$scope.cardass = gameData.data.association;
 
-IGame.controller('turn-controller', function($scope) {
+/*    $scope.choice = function (c_id) {
+        $scope.selectedcard = c_id;
+        if (gameData.data.main == true) {
+            $scope.overlayon = true
+        }
+        else {
+            $scope.send_choice(c_id, '')
+        }
+    };*/
 
-	$scope.cards = [0, 44, 72, 144, 2, 1]
-	$scope.selectedcard = undefined
-	$scope.overlayon = false
-	$scope.cardass = ''
+    //$scope.send_choice = gameData.data.send_choice;
 
-	$scope.clickcard = function (c_id) {
-		console.log('Player selected card: ' + c_id)
-		$scope.selectedcard = c_id
-		$scope.overlayon = true
-	}
+    /* Table var */
+   //$scope.table = gameData.data.table
 
-	$scope.choice = function () {
-		console.log('Player selected card ' + $scope.selectedcard + ' and wrote assocication: ' + $scope.cardass)
-	}
-})
 
-IGame.controller('vote-controller', function($scope) {
-
-	$scope.table = [5, 6, 7, 99, 555, 2]
-	$scope.selectedcard = undefined
-
-	$scope.clickcard = function (c_id) {
-		console.log('Player selected card: ' + c_id)
-		$scope.selectedcard = c_id
-		$scope.overlayon = true
-	}
-})
+    $scope.startgame = gameData.start_game
+});
