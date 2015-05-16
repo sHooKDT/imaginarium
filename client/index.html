@@ -15,7 +15,7 @@
     <script src="js/socket.js"></script>
 </head>
 <body ng-controller="game-controller" ng-switch on="activepage">
-    <style ng-if="sowminimap">section{width: 85%;}</style>
+    <style ng-if="showminimap">section{width: 85%;}</style>
     <section ng-switch-when="page-lobby" class="page-lobby">
         <div class="page-lobby-logo"></div>
         <div class="page-lobby-dcontainer">
@@ -50,13 +50,22 @@
         </div>
     </section>
     <section ng-switch-when="page-score" class="page-score">Страница счета</section>
-    <section ng-switch-when="page-wait" class="page-wait">nothing happens...</section>
+    <section ng-switch-when="page-wait" class="page-wait">
+        <div class="cbcontainer">
+            <div class="cbback cbside"></div>
+            <div class="cbleft cbside"></div>
+            <div class="cbright cbside"></div>
+            <div class="cbtop scbide"></div>
+            <div class="cbbottom cbside"></div>
+            <div class="cbfront cbside"></div>
+        </div>
+    </section>
     </div>
     <div ng-show="showminimap" class="page-minimap"></div>
     <footer>
     <select ng-model="activepage" ng-options="item for item in pages" class="page-selector">
     <label><input ng-model="showminimap" type="checkbox">Show minimap</label>
-    <input type="button" ng-click="startgame()" value="GO">
+    <input type="button" ng-click="startgame()" value="START">
     </footer>
 </body>
 </html>

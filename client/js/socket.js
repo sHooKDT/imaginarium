@@ -54,7 +54,14 @@ IGame.factory('gameData', function ($websocket) {
     }
 
     return {
-        gameState,
+        stage: gameState.stage,
+        hand: gameState.hand,
+        main: gameState.main,
+        table: gameState.table,
+        score: gameState.score,
+        association: gameState.association,
+        pcount: gameState.pcount,
+
         send_choice: send_choice,
         join_game: join_game,
         start_game: start_game
