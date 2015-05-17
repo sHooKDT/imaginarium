@@ -21,7 +21,7 @@ game_stage = 0
 # 4 - Score
 
 # Счетчик раундов (в 1 надо раздать 6 карт, дальше - по 1)
-round_num = 1
+round_num = 0
 
 # Игроки в ожидании
 ready_count = 0
@@ -31,19 +31,11 @@ static_path = 'client/'
 
 # Проверка готовности всех игроков на стадии
 def all_ready():
-    if game_stage == 1:
-        if ready_count == 1:
-            return True
-        else:
-            return False
-    elif game_stage in [2, 3]:
-        if ready_count == len(logic.players) - 1:
-            return True
-        else:
-            return False
-    else:
-        return True
-
+    if game_stage == 1 and ready_count == 1: return True
+    elif game_stage == 2 and ready_count == len(logic.players) - 1: return True
+    elif game_stage == 3 and ready_count == len(logic.players): return True
+    elif game_stage == 4: return True
+    else: return False
 
 # Меняем стадию и рассылаем данные клиентам
 def change_stage(new_st):
@@ -53,7 +45,6 @@ def change_stage(new_st):
     global round_num
     global game_stage
 
-    print('Changing round stage...')
     # Обнуляем готовность игроков
     ready_count = 0
     game_stage = new_st
@@ -61,19 +52,23 @@ def change_stage(new_st):
     # Дополнительные действия для стадий
     if new_st == 1:
 
+        print('---------ROUND ' + str(round_num) + ' STARTING---------')
+
         # Меняем главного игрока
         if logic.main_player != len(logic.players) - 1:
             logic.main_player += 1
         else:
             logic.main_player = 0
 
+        print('Main player now is: ' + logic.players[logic.main_player]['name'])
+
+        round_num += 1
         # Даем карты в зависимости от номера раунда
         if round_num == 1:
             logic.give_cards(6)
         else:
             logic.give_cards(1)
 
-        round_num += 1
     # elif new_st == 2:
     elif new_st == 3:
         shuffle(logic.table)
@@ -101,8 +96,8 @@ def change_stage(new_st):
                 'name': player['name']
             }
         })
-        print('Sending data to ' + player['name'] + ', data: ' + mes)
         player['socket'].write_message(mes)
+    print('...All players got data about new stage: ' + str(new_st))
 
 
 # Возвращает id игрока по сокеты клиента
@@ -115,7 +110,7 @@ def identify_client(id_socket):
 # Рассылка главной страницы
 class MainPageHandler(tornado.web.RequestHandler):
     def get(self):
-        print('Page request from ' + self.request.remote_ip)
+        print('Connection with ip: ' + self.request.remote_ip)
         page = open(static_path + 'index.html', encoding='utf8').read()
         self.write(page)
 
@@ -125,7 +120,7 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
     global cur_ass
 
     def open(self):
-        print('Websocket is ready.')
+        print('Websocket connected.')
         # Посылаем информацию о лобби
         self.write_message(json.dumps({
             'type': 'update',
@@ -146,10 +141,9 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
         global game_stage
         data = json.loads(message)
         # print(logic.players[identify_client(self)].name + ' is sending data: ' + data)
-        print('Got mes: ' + message)
         client_id = identify_client(self)
         if data['type'] == 'choice':
-            print('It was a choice from ' + logic.players[identify_client(self)]['name'])
+            print('Choice from ' + logic.players[identify_client(self)]['name'])
             # if game_stage == 1 and logic.players[logic.main_player]['socket'] == self:
             if game_stage == 1:
                 logic.put_card(data['choice'], client_id)
@@ -162,9 +156,12 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
             elif game_stage == 3:
                 logic.vote(data['choice'], client_id)
                 ready_count += 1
-                if all_ready(): change_stage(4)
-                sleep(randint(7, 13))
-                if all_ready(): change_stage(1)
+                if all_ready(): 
+                    logic.all_score(logic.main_player)
+                    logic.done_cards()
+                    change_stage(4)
+                    sleep(randint(7, 13))
+                    change_stage(1)
 
         elif data['type'] == 'join':
             print(data['data'] + ' is joining game.')

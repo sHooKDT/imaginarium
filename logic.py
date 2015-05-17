@@ -40,12 +40,13 @@ def vote(card_id, user_id):
 def all_score(main_player):
     for card in table:
         if card['owner'] == main_player:
-           a = card['votes'] # проголосовавшие за ведущего
-           if a == []:
-               players[main_player]['score']-=3
-               if players[main_player]['score']<0:
-                   players[main_player]['score']=0
-           else:
+            a = card['votes'] # проголосовавшие за ведущего
+            if a == []:
+                players[main_player]['score']-=3
+                if players[main_player]['score']<0:
+                  players[main_player]['score']=0
+            # TODO: elif all for main then main -= 3???
+            else:
                for user_id in a:
                    print('Player',user_id,', right choice')
                    players[user_id]['score']+=3

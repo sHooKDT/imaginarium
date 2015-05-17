@@ -47,7 +47,8 @@ IGame.controller('game-controller', function ($scope, gameData) {
     $scope.formvisible = false;
 
     $scope.join = function () {
-    	gameData.join_game($scope.state.name)
+    	gameData.join_game($scope.state.name);
+        $scope.activepage = 1
     }
 
     /* Turn controller */
