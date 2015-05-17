@@ -1,56 +1,73 @@
 var IGame = angular.module('imaginarium', ['ngAnimate', 'ngWebSocket']);
-
-var gamestate = undefined;
-
+var gamescope = undefined;
 IGame.controller('game-controller', function ($scope, gameData) {
 
-    // Object.observe(gameData, function(changes) {
-    //     $scope.$spply
-    // })
-    
-    $scope.$watch(gameData, function() {
-        console.log('data changed');
-        $scope.state = gameData;
-    });
+    gamescope = $scope;
 
-    $scope.state = gameData
+    $scope.state = {
+        stage: 0,
+        hand: [],
+        main: false,
+        table: [],
+        score: [],
+        pcount: 0,
+        association: '',
+        name: ''
+    };
 
-	$scope.activepage = 0
+    $scope.$on('info-update', function(event, state) {
+        $scope.state = state
+        // Page switch
+        switch (state.stage) {
+            case 0:
+                $scope.activepage = 0;
+                break;
+            case 1:
+                if (state.main) {$scope.activepage = 2} else {$scope.activepage = 1}
+                break;
+            case 2:
+                if (!state.main) {$scope.activepage = 2} else {$scope.activepage = 1}
+                break;
+            case 3:
+                $scope.activepage = 3
+                break;
+            case 4:
+                $scope.activepage = 4
+                break;
+        }
+        console.log(state)
+    })
 
-    /* Page switcher*/
-    $scope.playerscount = $scope.state.pcount;
+
+    /* Pages initialization */
     $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-vote', 'page-score'];
-    // $scope.activepage = $scope.pages[0];
+    $scope.activepage = $scope.pages[0];
 
     /* Join form control */
-    $scope.playername = '';
     $scope.formvisible = false;
 
     $scope.join = function () {
-    	gameData.join_game($scope.playername)
+    	gameData.join_game($scope.state.name)
     }
 
     /* Turn controller */
-    $scope.hand = $scope.state.hand;
     $scope.selectedcard = undefined;
     $scope.overlayon = false;
-    $scope.cardass = $scope.state.association;
 
-    $scope.choice = function (c_id) {
+    $scope.choice = function (c_id, w_ass) {
         $scope.selectedcard = c_id;
-        if ($scope.state.main == true) {
+        console.log('Choice: ' + c_id)
+        if ($scope.state.main && !w_ass) {
             $scope.overlayon = true
         }
         else {
-            $scope.send_choice(c_id, '')
+            console.log('Sending choice: ' + c_id + ', ass: ' + $scope.state.association)
+            $scope.send_choice(c_id, $scope.state.association);
+            $scope.activepage = 1
+            $scope.overlayon = false
         }
     };
 
-    $scope.send_choice = $scope.state.send_choice;
-
-    /* Table var */
-    $scope.table = $scope.state.table
-
-
-    $scope.startgame = $scope.state.start_game
+    $scope.send_choice = gameData.send_choice;
+    $scope.start_game = gameData.start_game
 });

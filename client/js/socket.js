@@ -8,31 +8,22 @@ IGame.factory('gameData', function ($websocket) {
         main: false,
         table: [],
         score: [],
-        pcount: 0
+        pcount: 0,
+        association: '',
+        name: ''
     };
 
     gameSocket.onMessage(function (mes) {
         var data = JSON.parse(mes.data);
-        console.log(mes)
-        console.log(data)
-        if (data.type == 'status') {
-            gameState.stage = data.stage;
-            gameState.hand = data.hand;
-            gameState.main = data.main;
-            gameState.table = data.table;
-            gameState.score = data.score;
-            gameState.association = data.association
+        if (data.type == 'update') {
+            gameState = data.state
         }
-        else {
-            if (data.type == 'lobby') {
-                //noinspection CommaExpressionJS
-                gameState.pcount = data.pcount,
-                    gameState.stage = data.stage
-            }
-        }
+        console.log('Cur state broadcasted: ' + gameState)
+        gamescope.$broadcast('info-update', gameState);
     });
 
     function send_choice(c_id, ass) {
+        console.log('Sending choice, id: %d, ass: ' + ass, c_id)
         gameSocket.send(JSON.stringify({
             type: 'choice',
             choice: c_id,
@@ -54,14 +45,7 @@ IGame.factory('gameData', function ($websocket) {
     }
 
     return {
-        stage: gameState.stage,
-        hand: gameState.hand,
-        main: gameState.main,
-        table: gameState.table,
-        score: gameState.score,
-        association: gameState.association,
-        pcount: gameState.pcount,
-
+        state: gameState,
         send_choice: send_choice,
         join_game: join_game,
         start_game: start_game

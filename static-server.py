@@ -9,7 +9,7 @@ import json
 # Импорт игровой логики
 import logic
 # Extras
-from random import choice, randint
+from random import choice, randint, shuffle
 from time import sleep
 
 # Текущая стадия игры
@@ -20,11 +20,13 @@ game_stage = 0
 # 3 - Voting
 # 4 - Score
 
+# Счетчик раундов (в 1 надо раздать 6 карт, дальше - по 1)
 round_num = 1
 
 # Игроки в ожидании
 ready_count = 0
 
+# Относительный путь до папки с фронтендом
 static_path = 'client/'
 
 # Проверка готовности всех игроков на стадии
@@ -49,23 +51,30 @@ def change_stage(new_st):
     global main_player
     global table
     global round_num
+    global game_stage
 
+    print('Changing round stage...')
     # Обнуляем готовность игроков
     ready_count = 0
+    game_stage = new_st
 
     # Дополнительные действия для стадий
     if new_st == 1:
+
+        # Меняем главного игрока
         if logic.main_player != len(logic.players) - 1:
             logic.main_player += 1
         else:
             logic.main_player = 0
 
+        # Даем карты в зависимости от номера раунда
         if round_num == 1:
             logic.give_cards(6)
         else:
             logic.give_cards(1)
-        round_num += 1
 
+        round_num += 1
+    # elif new_st == 2:
     elif new_st == 3:
         shuffle(logic.table)
     elif new_st == 4:
@@ -80,14 +89,19 @@ def change_stage(new_st):
             isMain = False
 
         mes = json.dumps({
-            'type': 'status',
-            'stage': new_st,
-            'hand': player['user_hand'],
-            'main': isMain,
-            'table': [x['c_id'] for x in logic.table],
-            'score': [x['score'] for x in logic.players],
-            'association': logic.cur_ass
+            'type': 'update',
+            'state': {
+                'stage': new_st,
+                'hand': player['user_hand'],
+                'main': isMain,
+                'table': [x['c_id'] for x in logic.table],
+                'score': [x['score'] for x in logic.players],
+                'pcount': len(logic.players),
+                'association': logic.cur_ass,
+                'name': player['name']
+            }
         })
+        print('Sending data to ' + player['name'] + ', data: ' + mes)
         player['socket'].write_message(mes)
 
 
@@ -114,19 +128,30 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
         print('Websocket is ready.')
         # Посылаем информацию о лобби
         self.write_message(json.dumps({
-            'type': 'lobby',
-            'pcount': len(logic.players),
-            'stage': game_stage,
-
+            'type': 'update',
+            'state': {
+                'stage': 0,
+                'hand': [],
+                'main': False,
+                'table': [],
+                'score': [],
+                'pcount': len(logic.players),
+                'association': '',
+                'name': ''
+            }
         }))
 
     def on_message(self, message):
         global ready_count
+        global game_stage
         data = json.loads(message)
         # print(logic.players[identify_client(self)].name + ' is sending data: ' + data)
+        print('Got mes: ' + message)
         client_id = identify_client(self)
         if data['type'] == 'choice':
-            if game_stage == 1 and logic.players[logic.main_player]['socket'] == self:
+            print('It was a choice from ' + logic.players[identify_client(self)]['name'])
+            # if game_stage == 1 and logic.players[logic.main_player]['socket'] == self:
+            if game_stage == 1:
                 logic.put_card(data['choice'], client_id)
                 logic.cur_ass = data['data']
                 change_stage(2)
@@ -146,13 +171,17 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
             logic.new_player(data['data'], self)
             if game_stage == 0:
                 self.write_message(json.dumps({
-                    'type': 'status',
-                    'stage': 0,
-                    'hand': [],
-                    'main': False,
-                    'table': [],
-                    'score': [],
-                    'association': ''
+                    'type': 'update',
+                    'state': {
+                        'stage': 0,
+                        'hand': [],
+                        'main': False,
+                        'table': [],
+                        'score': [],
+                        'pcount': len(logic.players),
+                        'association': '',
+                        'name': ''
+                    }
                 }))
 
         elif data['type'] == 'start':
