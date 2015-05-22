@@ -16,7 +16,7 @@ IGame.controller('game-controller', function ($scope, gameData) {
     };
 
     $scope.$on('info-update', function(event, state) {
-        $scope.state = state
+        $scope.state = state;
         // Page switch
         switch (state.stage) {
             case 0:
@@ -29,19 +29,19 @@ IGame.controller('game-controller', function ($scope, gameData) {
                 if (!state.main) {$scope.activepage = 2} else {$scope.activepage = 1}
                 break;
             case 3:
-                $scope.activepage = 3
+                if (!state.main) {$scope.activepage = 3} else {$scope.activepage = 1}
                 break;
             case 4:
-                $scope.activepage = 4
+                $scope.activepage = 4;
                 break;
         }
         console.log(state)
-    })
+    });
 
 
     /* Pages initialization */
     $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-vote', 'page-score'];
-    $scope.activepage = $scope.pages[0];
+    $scope.activepage = 2;
 
     /* Join form control */
     $scope.formvisible = false;
@@ -49,22 +49,22 @@ IGame.controller('game-controller', function ($scope, gameData) {
     $scope.join = function () {
     	gameData.join_game($scope.state.name);
         $scope.activepage = 1
-    }
+    };
 
     /* Turn controller */
     $scope.selectedcard = undefined;
-    $scope.overlayon = false;
+    $scope.overlayon = true;
 
     $scope.choice = function (c_id, w_ass) {
         $scope.selectedcard = c_id;
-        console.log('Choice: ' + c_id)
+        console.log('Choice: ' + c_id);
         if ($scope.state.main && !w_ass) {
             $scope.overlayon = true
         }
         else {
-            console.log('Sending choice: ' + c_id + ', ass: ' + $scope.state.association)
+            console.log('Sending choice: ' + c_id + ', ass: ' + $scope.state.association);
             $scope.send_choice(c_id, $scope.state.association);
-            $scope.activepage = 1
+            $scope.activepage = 1;
             $scope.overlayon = false
         }
     };

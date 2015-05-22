@@ -60,3 +60,5 @@ target/
 .idea/
 prepros.cfg
 *.sublime-workspace
+client/
+node_modules/

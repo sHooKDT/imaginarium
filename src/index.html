@@ -31,15 +31,16 @@
         </div>
     </section>
     <section ng-switch-when="page-turn" class="page-turn">
-        <div class="page-turn-top-bar">Выбери одну из своих карт:</div>
+        <div class="page-turn-top-bar">Выбери карту, похожую на {{state.association}}:</div>
         <div class="page-turn-hand-container">
-            <div ng-repeat="card in state.hand track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, false)" class="hand-card"></div>
+<!--             <div ng-repeat="card in state.hand track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, false)" class="hand-card"></div> -->
+            <div ng-repeat="card in [0,2,3,4,1,55] track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, false)" class="hand-card"></div>
         </div>
         <div ng-show="overlayon" class="page-turn-overlay">
             <div class="page-turn-overlay-layer"></div>
             <div class="page-turn-overlay-ass-box">
                 <input ng-model="state.association" placeholder="Введите свою ассоциацию..." class="page-turn-ass-text" />
-                <div ng-click="choice(selectedcard, true)" class="page-turn-ass-accept"></div>
+                <div ng-click="choice(selectedcard, true)" class="page-turn-ass-accept">ACCEPT</div>
             </div>
                 </div>
     </section>
@@ -60,10 +61,9 @@
             <div class="cbfront cbside"></div>
         </div>
     </section>
-    </div>
     <div ng-show="showminimap" class="page-minimap"></div>
     <footer>
-    <select ng-model="activepage" ng-options="item for item in pages" class="page-selector">
+    <select ng-model="activepage" ng-options="item for item in [0,1,2,3,4]" class="page-selector" />
     <label><input ng-model="showminimap" type="checkbox">Show minimap</label>
     <input type="button" ng-click="start_game()" value="START">
     </footer>

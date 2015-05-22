@@ -31,17 +31,21 @@ static_path = 'client/'
 
 # Проверка готовности всех игроков на стадии
 def all_ready():
-    if game_stage == 1 and ready_count == 1: return True
-    elif game_stage == 2 and ready_count == len(logic.players) - 1: return True
-    elif game_stage == 3 and ready_count == len(logic.players): return True
-    elif game_stage == 4: return True
-    else: return False
+    if game_stage == 1 and ready_count == 1:
+        return True
+    elif game_stage == 2 and ready_count == len(logic.players) - 1:
+        return True
+    elif game_stage == 3 and ready_count == len(logic.players) - 1:
+        return True
+    elif game_stage == 4:
+        return True
+    else:
+        return False
+
 
 # Меняем стадию и рассылаем данные клиентам
 def change_stage(new_st):
     global ready_count
-    global main_player
-    global table
     global round_num
     global game_stage
 
@@ -60,7 +64,7 @@ def change_stage(new_st):
         else:
             logic.main_player = 0
 
-        print('Main player now is: ' + logic.players[logic.main_player]['name'])
+        print('Main player: ' + logic.players[logic.main_player]['name'])
 
         round_num += 1
         # Даем карты в зависимости от номера раунда
@@ -97,7 +101,7 @@ def change_stage(new_st):
             }
         })
         player['socket'].write_message(mes)
-    print('...All players got data about new stage: ' + str(new_st))
+    print('### Stage changed to: ' + str(new_st))
 
 
 # Возвращает id игрока по сокеты клиента
@@ -109,6 +113,9 @@ def identify_client(id_socket):
 
 # Рассылка главной страницы
 class MainPageHandler(tornado.web.RequestHandler):
+    def data_received(self, chunk):
+        pass
+
     def get(self):
         print('Connection with ip: ' + self.request.remote_ip)
         page = open(static_path + 'index.html', encoding='utf8').read()
@@ -117,7 +124,8 @@ class MainPageHandler(tornado.web.RequestHandler):
 
 # Обработчик запросов клиентов
 class UserSocketsHandler(tornado.websocket.WebSocketHandler):
-    global cur_ass
+    def data_received(self, chunk):
+        pass
 
     def open(self):
         print('Websocket connected.')
@@ -143,7 +151,7 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
         # print(logic.players[identify_client(self)].name + ' is sending data: ' + data)
         client_id = identify_client(self)
         if data['type'] == 'choice':
-            print('Choice from ' + logic.players[identify_client(self)]['name'])
+            print('________got mes from ' + logic.players[identify_client(self)]['name'])
             # if game_stage == 1 and logic.players[logic.main_player]['socket'] == self:
             if game_stage == 1:
                 logic.put_card(data['choice'], client_id)
@@ -156,7 +164,7 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
             elif game_stage == 3:
                 logic.vote(data['choice'], client_id)
                 ready_count += 1
-                if all_ready(): 
+                if all_ready():
                     logic.all_score(logic.main_player)
                     logic.done_cards()
                     change_stage(4)
