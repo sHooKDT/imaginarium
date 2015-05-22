@@ -65,7 +65,7 @@ footer {
   }
 }
 
-$side: 10em;
+$cbside: 10em;
 
 .cbcontainer {
   position: absolute;
@@ -74,16 +74,16 @@ $side: 10em;
   left: -1em;
   right: -1em;
   margin: auto;
-  width: $side;
-  height: $side;
+  width: $cbside;
+  height: $cbside;
   transform-style: preserve-3d;
   opacity: .7;
   animation: rotate 15s infinite linear;
   }
 .cbside {
   position: absolute;
-  width: $side;
-  height: $side;
+  width: $cbside;
+  height: $cbside;
   overflow: hidden;
   background: linear-gradient( yellowgreen 1px, transparent 2px);
   background-size: 15px 15px;
@@ -92,22 +92,22 @@ $side: 10em;
   }
 
 .cbback {
-  transform: translateZ(-$side/2);
+  transform: translateZ(-$cbside/2);
   }
 .cbfront {
-  transform: translateZ($side/2);
+  transform: translateZ($cbside/2);
   }
 .cbtop {
-  transform: translateY(-$side/2) rotateX(90deg);
+  transform: translateY(-$cbside/2) rotateX(90deg);
   }
 .cbbottom {
-  transform: translateY($side/2) rotateX(90deg);
+  transform: translateY($cbside/2) rotateX(90deg);
   }
 .cbleft {
-  transform: translateX(-$side/2) rotateY(90deg);
+  transform: translateX(-$bside/2) rotateY(90deg);
   }
 .cbright {
-  transform: translateX($side/2) rotateY(90deg);
+  transform: translateX($cbside/2) rotateY(90deg);
   }
 
 @keyframes rotate {

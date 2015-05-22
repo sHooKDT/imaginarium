@@ -1,6 +1,23 @@
 module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
+        watch: {
+            js: {
+                files: ['src/js/*.js'],
+                tasks: ['uglify'],
+                options: {
+                    spawn: false,
+                },
+            },
+            html: {
+                files: ['src/index.html'],
+                tasks: ['htmlmin']
+            },
+            styles: {
+                files: ['src/styles/*'],
+                tasks: ['sass']
+            }
+        },
         clean: {
             client: {
                 options: {
@@ -49,9 +66,9 @@ module.exports = function(grunt) {
             font: {
                 files: [{
                     expand: true,
-                    cwd: 'src/res/font/',
+                    cwd: 'src/res/fonts/',
                     src: ['**'],
-                    dest: 'client/res/font/'
+                    dest: 'client/res/fonts/'
                 }]
             },
             img: {
@@ -94,7 +111,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     // Tasks
-    grunt.registerTask('default', ['sass']);
-    grunt.registerTask('build', ['clean', 'sass', 'htmlmin', 'uglify', 'imagemin', 'copy']);
+    grunt.registerTask('default', ['watch']);
+    grunt.registerTask('cards', ['imagemin']);
+    grunt.registerTask('update', ['sass', 'htmlmin', 'uglify', 'copy']);
+    grunt.registerTask('build', ['clean', 'sass', 'htmlmin', 'uglify', 'copy']);
 };

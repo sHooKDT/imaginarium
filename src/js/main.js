@@ -41,7 +41,7 @@ IGame.controller('game-controller', function ($scope, gameData) {
 
     /* Pages initialization */
     $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-vote', 'page-score'];
-    $scope.activepage = 2;
+    $scope.activepage = 1;
 
     /* Join form control */
     $scope.formvisible = false;
@@ -53,7 +53,7 @@ IGame.controller('game-controller', function ($scope, gameData) {
 
     /* Turn controller */
     $scope.selectedcard = undefined;
-    $scope.overlayon = true;
+    $scope.overlayon = false;
 
     $scope.choice = function (c_id, w_ass) {
         $scope.selectedcard = c_id;
