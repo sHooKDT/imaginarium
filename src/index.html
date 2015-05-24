@@ -12,7 +12,6 @@
     <script src="js/external/angular-animate.min.js"></script>
     <script src="js/external/angular-websocket.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/socket.js"></script>
 </head>
 <body ng-controller="game-controller" ng-switch on="pages[activepage]">
     <style ng-if="showminimap">section{width: 85%;}</style>
@@ -31,7 +30,10 @@
         </div>
     </section>
     <section ng-switch-when="page-turn" class="page-turn">
-        <div class="page-turn-top-bar">Выбери карту, похожую на {{state.association}}:</div>
+        <div class="page-turn-top-bar">
+        <p>Выбери карту</p>
+        <p class="ass">Ассоциация: {{ state.association }}</p>
+        </div>
         <div class="page-turn-hand-container">
 <div ng-repeat="card in state.hand track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, false)" class="hand-card"></div>
             <!-- <div ng-repeat="card in [0,2,3,4,1,55] track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, false)" class="hand-card"></div> -->

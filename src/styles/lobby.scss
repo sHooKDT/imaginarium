@@ -1,23 +1,12 @@
-/* Custom font */
-@font-face {
-  font-family: "AnfisaGroteskRegular";
-  src: url("../res/fonts/AnfisaGroteskRegular/AnfisaGroteskRegular.eot");
-  src: url("../res/fonts/AnfisaGroteskRegular/AnfisaGroteskRegular.eot?#iefix") format("embedded-opentype"), url("../res/fonts/AnfisaGroteskRegular/AnfisaGroteskRegular.woff") format("woff"), url("../res/fonts/AnfisaGroteskRegular/AnfisaGroteskRegular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: normal;
-}
-
+@import 'presets';
+@import 'compass';
 
 /* Central logo at lobby page */
 
 .page-lobby-logo {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  width: 100%;
+  @extend .pr_npos;
+  @include size(100%, 100%);
   max-width: 750px;
-  height: 100%;
   max-height: 350px;
   z-index: 1;
   margin: 10% auto;
@@ -27,18 +16,13 @@
 /* Info container styles (big box) */
 
 .page-lobby-dcontainer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+  @extend .pr_npos;
+  @include size(100%, 200px);
   max-width: 600px;
   min-width: 480px;
-  height: 200px;
   z-index: 1;
   margin: auto auto 5%;
-  background: #E5A871;
+  background: $color-primary-1;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -46,12 +30,12 @@
 /* Left labels */
 
 .page-lobby-dcontainer-plcountext {
-  font-size: 24pt;
+  font-size: $font-size-main;
   margin: 40px;
 }
 
 .page-lobby-dcontainer-gstatustext {
-  font-size: 24pt;
+  font-size: $font-size-main;
   margin: calc(70px + 24pt) 40px;
 }
 
@@ -60,32 +44,35 @@
 .page-lobby-dcontainer-join {
   width: 200px;
   height: 200px;
-  top: 0;
-  right: 0;
-  background: #ededed;
+  top: 0; right: 0;
   cursor: pointer;
 }
 
 /* Big join button */
 
-.page-lobby-dcontainer-join-big {
-  font-size: 64pt;
-  width: 100%;
-  height: 100%;
-  line-height: 200px;
-  text-align: center;
+@keyframes anib {
+  0% { background: $color-primary-1 }
+  100% { background: $color-primary-2 }
 }
 
-.page-lobby-dcontainer-join:hover {
-  background: #e2e2e2;
+.page-lobby-dcontainer-join-big {
+  font-size: 64pt;
+  @include size(100%, 100%);
+  line-height: 200px;
+  text-align: center;
+  border-left: solid 1px white;
+  background: $color-primary-1;
+  &:hover {
+    animation: anib ease-out 0.6s 1;
+  }
 }
 
 /* Join form container */
 
 .page-lobby-dcontainer-join-form {
-  height: 100%;
-  width: 100%;
+  @include size(100%, 100%);
   background-color: azure;
+  border-left: solid 1px white;
 }
 
 .join-form-animate {
@@ -101,31 +88,34 @@
 /* Input field */
 
 .page-lobby-dcontainer-join-form-ninput {
-  width: 100%;
-  height: 50px;
+  @include size(100%, 50px);
   outline: 0;
   border: 0;
   padding: 0;
-  font-size: 18pt;
+  font-size: $font-size-small;
   text-align: center;
-  background: #E8C5A6;
+  background: $color-primary-2;
+  &:hover {
+    cursor: pointer;
+  }
   &:focus {
-    background: #EED7C4;
+    background: $color-primary-1;
+    cursor: text;
   }
 }
 
 /* Small join button in form */
 
 .page-lobby-dcontainer-join-form-jbutton {
-  background-color: bisque;
-  width: 100%;
-  height: calc(100% - 50px);
+  background-color: $color-primary-2;
+  @include size(100%, calc(100% - 50px));
   bottom: 0;
+  border-top: 1px solid white;
   text-align: center;
   line-height: 150px;
-  font-size: 54pt;
+  font-size: $font-size-buttons;
   padding: 0;
   &:hover {
-    background: #ffddb4;
+    background: $color-primary-1;
   }
 }

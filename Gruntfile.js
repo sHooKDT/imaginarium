@@ -2,12 +2,18 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         watch: {
+            gruntfile: {
+                files: ['Gruntfile.js'],
+                options: {
+                    reload: true
+                }
+            },
             js: {
                 files: ['src/js/*.js'],
                 tasks: ['uglify'],
                 options: {
-                    spawn: false,
-                },
+                    spawn: false
+                }
             },
             html: {
                 files: ['src/index.html'],
@@ -15,7 +21,7 @@ module.exports = function(grunt) {
             },
             styles: {
                 files: ['src/styles/*'],
-                tasks: ['sass']
+                tasks: ['compass']
             }
         },
         clean: {
@@ -26,7 +32,7 @@ module.exports = function(grunt) {
                 src: ['client']
             }
         },
-        sass: {
+/*        sass: {
             styles: {
                 options: {
                     style: 'compressed',
@@ -38,6 +44,15 @@ module.exports = function(grunt) {
                     'client/styles/lobby.css': 'src/styles/lobby.scss',
                     'client/styles/turn.css': 'src/styles/turn.scss',
                     'client/styles/table.css': 'src/styles/table.scss'
+                }
+            }
+        },*/
+        compass: {
+            styles: {
+                options: {
+                    sassDir: 'src/styles',
+                    cssDir: 'client/styles/',
+                    environment: 'production'
                 }
             }
         },
@@ -105,7 +120,8 @@ module.exports = function(grunt) {
         }
     });
     // Load plugins
-    grunt.loadNpmTasks('grunt-contrib-sass');
+    // grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-compass');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-imagemin');
@@ -113,8 +129,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
     // Tasks
-    grunt.registerTask('default', ['watch']);
+    grunt.registerTask('default', ['build', 'watch']);
     grunt.registerTask('cards', ['imagemin']);
-    grunt.registerTask('update', ['sass', 'htmlmin', 'uglify', 'copy']);
-    grunt.registerTask('build', ['clean', 'sass', 'htmlmin', 'uglify', 'copy']);
+    grunt.registerTask('build', ['clean', 'compass', 'htmlmin', 'uglify', 'copy']);
 };

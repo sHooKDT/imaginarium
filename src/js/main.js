@@ -41,7 +41,7 @@ IGame.controller('game-controller', function ($scope, gameData) {
 
     /* Pages initialization */
     $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-vote', 'page-score'];
-    $scope.activepage = 1;
+    $scope.activepage = 2;
 
     /* Join form control */
     $scope.formvisible = false;
