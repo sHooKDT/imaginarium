@@ -9,7 +9,7 @@ import json
 # Импорт игровой логики
 import logic
 # Extras
-from random import choice, randint, shuffle
+from random import randint, shuffle
 from time import sleep
 
 # Текущая стадия игры
@@ -43,6 +43,61 @@ def all_ready():
         return False
 
 
+def notify_all():
+    for player in logic.players:
+
+        if logic.players.index(player) == logic.main_player:
+            isMain = True
+        else:
+            isMain = False
+
+        mes = json.dumps({
+            'type': 'update',
+            'state': {
+                'stage': game_stage,
+                'hand': player['user_hand'],
+                'main': isMain,
+                'table': [x['c_id'] for x in logic.table],
+                'pcount': len(logic.players),
+                'association': logic.cur_ass,
+                'name': player['name']
+            }
+        })
+
+        player['socket'].write_message(mes)
+
+
+def send_score():
+    score_table = []
+    for player in logic.players:
+        plid = logic.players.index(player)
+        pvote = 0
+        pturn = 0
+        pmain = False
+        for card in logic.table:
+            if card['owner'] == plid:
+                pturn = card['c_id']
+            for vote in card['votes']:
+                if vote == plid:
+                    pvote = card['c_id']
+        if plid == logic.main_player:
+            pmain = True
+        else:
+            pmain = False
+        score_table.append({
+            'name': player['name'],
+            'vote': pvote,
+            'turn': pturn,
+            'score': player['score'],
+            'main': pmain
+        })
+    for player in logic.players:
+        player['socket'].write_message(json.dumps({
+            'type': 'score',
+            'score': score_table
+        }))
+
+
 # Меняем стадию и рассылаем данные клиентам
 def change_stage(new_st):
     global ready_count
@@ -55,6 +110,7 @@ def change_stage(new_st):
 
     # Дополнительные действия для стадий
     if new_st == 1:
+
 
         print('---------ROUND ' + str(round_num) + ' STARTING---------')
 
@@ -78,29 +134,12 @@ def change_stage(new_st):
         shuffle(logic.table)
     elif new_st == 4:
         logic.all_score(logic.main_player)
+        send_score()
+        logic.done_cards()
 
     # Рассылка текущих игровых данных
-    for player in logic.players:
+    notify_all()
 
-        if logic.players.index(player) == logic.main_player:
-            isMain = True
-        else:
-            isMain = False
-
-        mes = json.dumps({
-            'type': 'update',
-            'state': {
-                'stage': new_st,
-                'hand': player['user_hand'],
-                'main': isMain,
-                'table': [x['c_id'] for x in logic.table],
-                'score': [x['score'] for x in logic.players],
-                'pcount': len(logic.players),
-                'association': logic.cur_ass,
-                'name': player['name']
-            }
-        })
-        player['socket'].write_message(mes)
     print('### Stage changed to: ' + str(new_st))
 
 
@@ -133,11 +172,10 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
         self.write_message(json.dumps({
             'type': 'update',
             'state': {
-                'stage': 0,
+                'stage': game_stage,
                 'hand': [],
                 'main': False,
                 'table': [],
-                'score': [],
                 'pcount': len(logic.players),
                 'association': '',
                 'name': ''
@@ -165,8 +203,6 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
                 logic.vote(data['choice'], client_id)
                 ready_count += 1
                 if all_ready():
-                    logic.all_score(logic.main_player)
-                    logic.done_cards()
                     change_stage(4)
                     sleep(randint(7, 13))
                     change_stage(1)
@@ -174,20 +210,7 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
         elif data['type'] == 'join':
             print(data['data'] + ' is joining game.')
             logic.new_player(data['data'], self)
-            if game_stage == 0:
-                self.write_message(json.dumps({
-                    'type': 'update',
-                    'state': {
-                        'stage': 0,
-                        'hand': [],
-                        'main': False,
-                        'table': [],
-                        'score': [],
-                        'pcount': len(logic.players),
-                        'association': '',
-                        'name': ''
-                    }
-                }))
+            notify_all()
 
         elif data['type'] == 'start':
             print('Someone is trying to start the game. Starting...')

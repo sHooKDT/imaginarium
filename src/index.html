@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="styles/lobby.css">
     <link rel="stylesheet" type="text/css" href="styles/turn.css">
     <link rel="stylesheet" type="text/css" href="styles/table.css">
+    <link rel="stylesheet" type="text/css" href="styles/score.css">
     <script src="js/external/angular.min.js"></script>
     <script src="js/external/angular-animate.min.js"></script>
     <script src="js/external/angular-websocket.min.js"></script>
@@ -32,7 +33,8 @@
     <section ng-switch-when="page-turn" class="page-turn">
         <div class="page-turn-top-bar">
         <p>Выбери карту</p>
-        <p class="ass">Ассоциация: {{ state.association }}</p>
+        <p ng-show="!state.main" class="t1">Ассоциация: {{ state.association }}</p>
+        <p ng-show="state.main" class="t1">Вы ведущий.</p>
         </div>
         <div class="page-turn-hand-container">
 <div ng-repeat="card in state.hand track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, false)" class="hand-card"></div>
@@ -52,7 +54,22 @@
             <div ng-repeat="card in state.table track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, true)" class="table-card"></div>
         </div>
     </section>
-    <section ng-switch-when="page-score" class="page-score">Страница счета</section>
+    <section ng-switch-when="page-score" class="page-score">
+        <table class="page-score-table">
+            <tr>
+                <td>Name</td>
+                <td>Turn</td>
+                <td>Vote</td>
+                <td>Score</td>
+            </tr>
+            <tr ng-repeat="player in score_table">
+                <td class="name">{{ player.name }}<div class="main-label" ng-show="player.main">main</div></td>
+                <td class="turn" ng-style="{'background-image':'url(res/cards/{{player.turn}}.jpg)'}"></td>
+                <td class="vote" ng-style="{'background-image':'url(res/cards/{{player.vote}}.jpg)'}"></td>
+                <td class="score">{{ player.score }}({{player.delta}})</td>
+            </tr>
+        </table>
+    </section>
     <section ng-switch-when="page-wait" class="page-wait">
         <div class="cbcontainer">
             <div class="cbback cbside"></div>

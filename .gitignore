@@ -62,3 +62,5 @@ prepros.cfg
 *.sublime-workspace
 client/
 node_modules/
+*.scssc
+*.cache

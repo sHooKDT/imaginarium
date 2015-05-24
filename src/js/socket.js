@@ -7,19 +7,26 @@ IGame.factory('gameData', function ($websocket) {
         hand: [],
         main: false,
         table: [],
-        score: [],
         pcount: 0,
         association: '',
         name: ''
     };
 
+    var scoreTable = []
+
     gameSocket.onMessage(function (mes) {
         var data = JSON.parse(mes.data);
-        if (data.type == 'update') {
-            gameState = data.state
+        switch (data.type) {
+            case 'update':
+                gameState = data.state;
+                gamescope.$broadcast('state-update', gameState);
+                break;
+            case 'score':
+                scoreTable = data.score;
+                gamescope.$broadcast('score-update', scoreTable);
+                console.log('Got new score table ' + scoreTable)
+                break;
         }
-        console.log('Cur state broadcasted: ' + gameState)
-        gamescope.$broadcast('info-update', gameState);
     });
 
     function send_choice(c_id, ass) {

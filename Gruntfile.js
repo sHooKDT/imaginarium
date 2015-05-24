@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
     // Project configuration.
+    require('time-grunt')(grunt);
     grunt.initConfig({
         watch: {
             gruntfile: {
@@ -24,6 +25,9 @@ module.exports = function(grunt) {
                 tasks: ['compass']
             }
         },
+        jshint: {
+            all: ['Gruntfile.js', 'src/js/*.js', 'client/js/*.js']
+        },
         clean: {
             client: {
                 options: {
@@ -32,7 +36,7 @@ module.exports = function(grunt) {
                 src: ['client']
             }
         },
-/*        sass: {
+        /*        sass: {
             styles: {
                 options: {
                     style: 'compressed',
@@ -128,8 +132,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     // Tasks
-    grunt.registerTask('default', ['build', 'watch']);
+    grunt.registerTask('default', ['update', 'watch']);
     grunt.registerTask('cards', ['imagemin']);
+    grunt.registerTask('update', ['compass', 'htmlmin', 'uglify', 'copy']);
     grunt.registerTask('build', ['clean', 'compass', 'htmlmin', 'uglify', 'copy']);
 };

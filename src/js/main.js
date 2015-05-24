@@ -9,13 +9,33 @@ IGame.controller('game-controller', function ($scope, gameData) {
         hand: [],
         main: false,
         table: [],
-        score: [],
         pcount: 0,
         association: '',
         name: ''
     };
 
-    $scope.$on('info-update', function(event, state) {
+    $scope.score_table = [
+        // {name:'Natasha',turn:27,vote:67,score:11,main:false},
+        // {name:'Time',turn:54,vote:53,score:10,main:true},
+        // {name:'Vanya',turn:24,vote:11,score:9,main:false},
+        // {name:'Zhenya',turn:12,vote:9,score:1,main:false}
+    ]
+
+    $scope.$on('score-update', function(event, new_score) {
+        console.log('Got new score at scope context: ' + new_score);
+        temp_score = new_score;
+        console.log('Temping success: ' + temp_score)
+        for (i=0;i<new_score.length;i++) {
+            if ($scope.score_table.length >= 1) {
+                temp_score[i].delta = new_score[i].score - $scope.score_table[i].score;
+            }
+            else {temp_score[i].delta = new_score[i].score}
+        }
+        $scope.score_table = temp_score;
+        console.log('Score updated: ' + $scope.score_table)
+    })
+
+    $scope.$on('state-update', function(event, state) {
         $scope.state = state;
         // Page switch
         switch (state.stage) {
@@ -35,13 +55,12 @@ IGame.controller('game-controller', function ($scope, gameData) {
                 $scope.activepage = 4;
                 break;
         }
-        console.log(state)
     });
 
 
     /* Pages initialization */
     $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-vote', 'page-score'];
-    $scope.activepage = 2;
+    $scope.activepage = 4;
 
     /* Join form control */
     $scope.formvisible = false;

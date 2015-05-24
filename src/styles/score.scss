@@ -1,0 +1,55 @@
+@import 'presets';
+
+.page-score-table {
+	tr:first-child {
+		td {
+			border: 0 3px solid black;
+		}
+		height: 50px;
+		background-color: rgba(255,175,75,1);
+		@include filter-gradient(#ffaf4b, #ff920a, vertical);
+		@include background-image(linear-gradient(top, rgba(255,175,75,1) 0%, rgba(255,146,10,1) 100%));
+	}
+	tr {
+		td {
+			padding: 0;
+			.main-label {
+				display: inline;
+				position: static;
+				font-size: 14pt;
+				width: 40px;
+				height: 20px;
+				line-height: 20px;
+				border-radius: 6px;
+				border: 3px solid #7a7a7a;
+				background: #1c95e6;
+				margin-left: 3px;
+			}
+		}
+		margin-top: 2px;
+		border: 2px solid black;
+		background-color: rgba(255,255,255,1);
+		background-color: rgba(255,255,255,1);
+		background-color: rgba(226,226,226,1);
+		@include filter-gradient(#e2e2e2, #fefefe, vertical);
+		@include background-image(linear-gradient(top, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 67%, rgba(209,209,209,1) 70%, rgba(254,254,254,1) 100%));
+	}
+	.score {
+		width: 6%;
+	}
+	.name {
+		width: 10%;
+	}
+	.turn, .vote {
+		width: 42%;
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+	@include size(100%, 100%);
+	overflow: scroll;
+	font-size: $font-size-main;
+	text-align: center;
+	padding: 0;
+	border-spacing: 0 3px;
+}
