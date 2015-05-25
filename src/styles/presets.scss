@@ -93,3 +93,9 @@ width: calc(100% / 3 - 20px);
     width: $w;
     height: $h;
 }
+@mixin placeholder {
+  ::-webkit-input-placeholder {@content}
+  :-moz-placeholder           {@content}
+  ::-moz-placeholder          {@content}
+  :-ms-input-placeholder      {@content}  
+}

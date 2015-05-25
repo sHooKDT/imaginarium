@@ -58,7 +58,7 @@
 }
 
 .page-lobby-dcontainer-join-big {
-  font-size: 64pt;
+  font-size: $font-size-big;
   @include size(100%, 100%);
   line-height: 200px;
   text-align: center;
@@ -69,10 +69,20 @@
   }
 }
 
+.page-lobby-dcontainer-start-but {
+  @extend .page-lobby-dcontainer-join-big;
+  font-size: $font-size-big - 14pt;
+  z-index: 3;
+}
+
 /* Join form container */
 
 .page-lobby-dcontainer-join-form {
   @include size(100%, 100%);
+  @include placeholder {
+    font-style: italic;
+    color: #636363;
+  }
   background-color: azure;
   border-left: solid 1px white;
 }

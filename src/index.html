@@ -25,8 +25,9 @@
                 <div ng-show="!formvisible" class="page-lobby-dcontainer-join-big join-form-animate">JOIN</div>
                 <div ng-show="formvisible" class="page-lobby-dcontainer-join-form join-form-animate">
                     <input ng-model="state.name" class="page-lobby-dcontainer-join-form-ninput" placeholder="Как вас зовут?"/>
-                    <div ng-click="join()" class="page-lobby-dcontainer-join-form-jbutton">READY</div>
+                    <div ng-click="join()" class="page-lobby-dcontainer-join-form-jbutton">OK</div>
                 </div>
+                <div ng-show="start_ready" ng-click="start_game()" class="page-lobby-dcontainer-start-but join-form-animate">START</div>
             </div>
         </div>
     </section>
@@ -82,9 +83,19 @@
     </section>
     <div ng-show="showminimap" class="page-minimap"></div>
     <footer>
-    <select ng-model="activepage" ng-options="item for item in [0,1,2,3,4]" class="page-selector" />
-    <label><input ng-model="showminimap" type="checkbox">Show minimap</label>
-    <input type="button" ng-click="start_game()" value="START">
+        <center>sHooK Design @ 2015</center>
     </footer>
+    <div ng-show="debug_mode" class="debug-panel">
+        <select ng-model="activepage" class="page-selector">
+            <option value="0">Lobby</option>
+            <option value="1">Wait</option>
+            <option value="2">Turn</option>
+            <option value="3">Vote</option>
+            <option value="4">Score</option>
+        </select><br>
+        <label><input ng-model="showminimap" type="checkbox">Show minimap</label><br>
+        <label><input ng-model="overlayon" type="checkbox">Show overlay(turn)</label><br>
+        <label><input ng-model="state.main" type="checkbox">Main toggle</label><br>
+    </div>
 </body>
 </html>

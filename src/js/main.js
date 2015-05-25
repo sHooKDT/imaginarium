@@ -3,6 +3,7 @@ var gamescope = undefined;
 IGame.controller('game-controller', function ($scope, gameData) {
 
     gamescope = $scope;
+    $scope.debug_mode = false; // Show debug panel
 
     $scope.state = {
         stage: 0,
@@ -60,15 +61,22 @@ IGame.controller('game-controller', function ($scope, gameData) {
 
     /* Pages initialization */
     $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-vote', 'page-score'];
-    $scope.activepage = 4;
+    $scope.activepage = 0;
 
     /* Join form control */
     $scope.formvisible = false;
 
     $scope.join = function () {
     	gameData.join_game($scope.state.name);
-        $scope.activepage = 1
+        $scope.start_ready = true
     };
+
+    /* Start game handler (form switch) */
+    $scope.start_ready = false;
+    $scope.start_game = function () {
+        $scope.activepage = 1;
+        gameData.start_game();
+    }
 
     /* Turn controller */
     $scope.selectedcard = undefined;
@@ -89,5 +97,4 @@ IGame.controller('game-controller', function ($scope, gameData) {
     };
 
     $scope.send_choice = gameData.send_choice;
-    $scope.start_game = gameData.start_game
 });
