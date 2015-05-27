@@ -21,9 +21,18 @@ $color-secondary-2-1: #FFFD64;
 $color-secondary-2-2: #FFFC39;
 $color-secondary-2-3: #C6C300;
 $color-secondary-2-4: #9B9900;
+
+
+
 /* Font settings */
 
-$font-primary: 'AnfisaGroteskRegular';
+/* Google fonts imports */
+@import url(http://fonts.googleapis.com/css?family=Underdog&subset=latin,cyrillic);
+@import url(http://fonts.googleapis.com/css?family=Marck+Script&subset=latin,cyrillic);
+
+// $font-primary: 'AnfisaGroteskRegular';
+$font-primary: 'Underdog', cursive;
+// $font-primary: 'Marck Script', cursive;
 $font-secondary: 'Arial';
 $font-size-main: 24pt;
 $font-size-buttons: 48pt;
@@ -44,26 +53,41 @@ $font-size-big: 64pt;
     right: 0;
     left: 0;
 }
+@keyframes card_rotation {
+    0% {
+        transform: rotate(0);
+    }
+    50% {
+        transform: rotate(15deg);
+    }
+    100% {
+        transform: rotate(10deg);
+    }
+}
 .pr_card-obj {
     display: inline-block;
     position: relative;
     margin: 10px;
     /*height: 431px;*/
-
-height: calc(50% - 20px);
+    height: calc(50% - 20px);
     /*width: 300px;*/
-
-width: calc(100% / 3 - 20px);
+    width: calc(100% / 3 - 20px);
+    @include border-radius(17px);
+    overflow: hidden;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     cursor: pointer;
+    &:hover {
+        animation: card_rotation linear 0.2s;
+        transform: rotate(10deg);
+    }
 }
 .pr_bar-container {
 	.t1 {
 		position: absolute;
 		float: right;
-		right: 0; top: 0;
+		right: 50px; top: 0;
 		font-size: $font-size-small;
 	}
 	p {
@@ -77,17 +101,27 @@ width: calc(100% / 3 - 20px);
     font-size: 40px;
     text-align: center;
     line-height: 50px;
-    background-color: rgba(255,175,75,1);
-	@include filter-gradient(#ffaf4b, #ff920a, vertical);
-	@include background-image(linear-gradient(top, rgba(255,175,75,1) 0%, rgba(255,146,10,1) 100%));
+    background-color: rgba(224,224,224,1);
+    @include filter-gradient(#e0e0e0, #ffffff, vertical);
+    @include background-image(linear-gradient(top, rgba(224,224,224,1) 0%, rgba(246,246,246,1) 47%, rgba(255,255,255,1) 100%));
 }
 .pr_cards-container {
     bottom: 0;
-    left: 0;
+    left: 0; right: 0;
+    margin: 0 auto;
     display: block;
     height: calc(100% - 50px);
     width: 100%;
     overflow: hidden;
+    @media screen and (min-width: 1500px) {
+        right: 0;
+        margin: 0 auto;
+        width: 60%;
+    }
+}
+.pr_classic-border {
+    border: 1px solid gray;
+    border-radius: 10px;
 }
 @mixin size($w, $h) {
     width: $w;

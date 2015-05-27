@@ -8,7 +8,7 @@ html, body {
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: "AnfisaGroteskRegular";
+  font-family: $font-primary;
 }
 
 div, section, footer {
@@ -26,6 +26,25 @@ section {
   width: 100%;
   height: calc(100% - 30px);
   background-color: #fff;
+  &.ng-animate {
+    @keyframes switching {
+      100% {
+        transform: scale(1);
+      }
+      0% {
+        transform: scale(0);
+      }
+    }
+    animation: switching 0.3s linear;
+  }
+  &.ng-leave.ng-leave-active,
+  &.ng-enter {
+    transform: scale(0);
+  }
+  &.ng-leave,
+  &.ng-enter.ng-enter-active {
+    transform: scale(1);
+  }
 }
 
 footer {
@@ -35,8 +54,8 @@ footer {
   bottom: 0;
   @include size(100%, 30px);
   background-color: rgba(255,255,255,1);
-  @include filter-gradient(#ffffff, #ff920a, vertical);
-  @include background-image(linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,146,10,1) 100%));
+  @include filter-gradient(#ffffff, #dedede, vertical);
+  @include background-image(linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(222,222,222,1) 100%));
 }
 
 .page-minimap {
@@ -115,11 +134,14 @@ $cbside: 10em;
 }
 
 .debug-panel {
-  top: 30px; right: 30px;
-  @include size(200px, 100px);
-  @include border-radius(10px);
-  border: 1px solid gray;
-  text-align: center;
+  label, select, input {
+    margin: 5px;
+  }
+  top: 30px; left: 30px;
+  @include size(auto, auto);
+  @extend .pr_classic-border;
+  padding: 10px;
+  text-align: left;
   background-color: rgba(255,255,255,1);
   @include filter-gradient(#ffffff, #ededed, vertical);
   @include background-image(linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%));

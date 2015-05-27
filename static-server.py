@@ -9,7 +9,7 @@ import json
 # Импорт игровой логики
 import logic
 # Extras
-from random import randint, shuffle
+import random
 from time import sleep
 
 # Текущая стадия игры
@@ -91,6 +91,7 @@ def send_score():
             'score': player['score'],
             'main': pmain
         })
+
     for player in logic.players:
         player['socket'].write_message(json.dumps({
             'type': 'score',
@@ -110,9 +111,17 @@ def change_stage(new_st):
 
     # Дополнительные действия для стадий
     if new_st == 1:
-
+        round_num += 1
 
         print('---------ROUND ' + str(round_num) + ' STARTING---------')
+
+        # Даем карты в зависимости от номера раунда
+        if round_num == 1:
+            logic.give_cards(6)
+            # Рандомно выбираем ведущего
+            logic.main_player = logic.players.index(random.choice(logic.players))
+        else:
+            logic.give_cards(1)
 
         # Меняем главного игрока
         if logic.main_player != len(logic.players) - 1:
@@ -120,18 +129,14 @@ def change_stage(new_st):
         else:
             logic.main_player = 0
 
-        print('Main player: ' + logic.players[logic.main_player]['name'])
+        # Обнуляем ассоциацию
+        logic.cur_ass = ''
 
-        round_num += 1
-        # Даем карты в зависимости от номера раунда
-        if round_num == 1:
-            logic.give_cards(6)
-        else:
-            logic.give_cards(1)
+        print('Main player: ' + logic.players[logic.main_player]['name'])
 
     # elif new_st == 2:
     elif new_st == 3:
-        shuffle(logic.table)
+        random.shuffle(logic.table)
     elif new_st == 4:
         logic.all_score(logic.main_player)
         send_score()
@@ -204,7 +209,7 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
                 ready_count += 1
                 if all_ready():
                     change_stage(4)
-                    sleep(randint(7, 13))
+                    sleep(random.randint(7, 13))
                     change_stage(1)
 
         elif data['type'] == 'join':

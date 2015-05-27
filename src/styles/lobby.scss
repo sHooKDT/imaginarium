@@ -1,133 +1,112 @@
-@import 'presets';
-
-/* Central logo at lobby page */
-
-.page-lobby-logo {
-  @extend .pr_npos;
-  @include size(100%, 100%);
-  max-width: 750px;
-  max-height: 350px;
-  z-index: 1;
-  margin: 10% auto;
-  background: url('../res/logo.svg') no-repeat 50% 50%;
-}
-
+@import'presets';
 /* Info container styles (big box) */
 
-.page-lobby-dcontainer {
-  @extend .pr_npos;
-  @include size(100%, 200px);
-  max-width: 600px;
-  min-width: 480px;
-  z-index: 1;
-  margin: auto auto 5%;
-  background: $color-primary-1;
-  border-radius: 10px;
-  overflow: hidden;
-  -webkit-box-shadow: 0px 0px 90px 6px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 0px 90px 6px rgba(0,0,0,0.75);
-  box-shadow: 0px 0px 90px 6px rgba(0,0,0,0.75);
-}
-
-/* Left labels */
-
-.page-lobby-dcontainer-plcountext {
-  font-size: $font-size-main;
-  margin: 40px;
-}
-
-.page-lobby-dcontainer-gstatustext {
-  font-size: $font-size-main;
-  margin: calc(70px + 24pt) 40px;
-}
-
-/* Join buttons container */
-
-.page-lobby-dcontainer-join {
-  width: 200px;
-  height: 200px;
-  top: 0; right: 0;
-  cursor: pointer;
-}
-
-/* Big join button */
-
-@keyframes anib {
-  0% { background: $color-primary-1 }
-  100% { background: $color-primary-2 }
-}
-
-.page-lobby-dcontainer-join-big {
-  font-size: $font-size-big;
-  @include size(100%, 100%);
-  line-height: 200px;
-  text-align: center;
-  border-left: solid 1px white;
-  background: $color-primary-1;
+$lobby-container-height: 200px;
+.page-lobby {
+    .lobby-logo {
+        @extend .pr_npos;
+        @include size(100%, 100%);
+        max-width: 750px;
+        max-height: 350px;
+        z-index: 1;
+        margin: 10% auto;
+        background: url('../res/logo.svg') no-repeat 50% 50%;
+   }
+   .lobby-container {
+       @extend .pr_npos;
+       @include size(100%, $lobby-container-height);
+       max-width: 600px;
+       min-width: 480px;
+       margin: auto auto 5%;
+       z-index: 1;
+       .lobby-info {
+           line-height: $lobby-container-height / 4;
+           padding-left: 20px;
+           @include size(60%, 100%);
+           width: calc(100% - $lobby-container-height);
+           left: 0;
+           @extend .pr_classic-border;
+           background-color: rgba(255, 255, 255, 1);
+           @include filter-gradient(#ffffff, #ededed, vertical);
+           @include background-image(linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%));
+           p {
+               font-size: 24pt;
+           }
+           @keyframes hideinfo {
+           	0% {
+					transform: scale(1);
+           	}
+           	99% {
+					transform: scale(0);
+           	}
+           	100% {
+           		transform: scale(0);
+           		display: none;
+           	}
+           }
+           @media screen and (max-width: 600px) {
+           		animation: hideinfo 0.5s linear;
+           		transform: scale(0);
+            	//display: none;
+        	  }
+   }
+   .lobby-buttons {
+       @include size($lobby-container-height, 100%);
+       right: 0;
+       text-align: center;
+       @extend .pr_classic-border;
+        @media screen and (max-width: 600px) {
+           right: 0; left: 0;
+           margin: 0 auto;
+        	}
+       background-color: rgba(255, 255, 255, 1);
+       @include filter-gradient(#ffffff, #ededed, vertical);
+       @include background-image(linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%));
+       .button-join {
+           @include size(100%, 100%);
+           line-height: $lobby-container-height;
+           font-size: 48pt;
+           &:hover {
+               cursor: pointer;
+          }
+     }
+     .join-input {
+         @extend .pr_classic-border;
+         margin: 10px auto;
+         @include size(90%, 30px);
+         &:focus {
+             outline: 0;
+             cursor: text;
+             background: #FAFAFA;
+        }
+   }
+   .ok-button {
+       @include size(90%, 140px);
+       line-height: 140px;
+       font-size: 48pt;
+       @extend .pr_classic-border;
+       margin: 0 10px auto;
+  }
+  .start-button {
+      @extend .button-join;
+      font-size: 36pt;
+ }
+ .button-join, .join-input, .ok-button, .start-button {
+     text-align: center;
+     @keyframes but-scale {
+         0% {
+             transform: scale(1);
+        }
+        100% {
+            transform: scale(1.1);
+       }
+  }
   &:hover {
-    animation: anib ease-out 0.6s 1;
-  }
+      cursor: pointer;
+      animation: but-scale 0.2s linear;
+      transform: scale(1.1);
+ }
 }
-
-.page-lobby-dcontainer-start-but {
-  @extend .page-lobby-dcontainer-join-big;
-  font-size: $font-size-big - 14pt;
-  z-index: 3;
 }
-
-/* Join form container */
-
-.page-lobby-dcontainer-join-form {
-  @include size(100%, 100%);
-  @include placeholder {
-    font-style: italic;
-    color: #636363;
-  }
-  background-color: azure;
-  border-left: solid 1px white;
 }
-
-.join-form-animate {
-  opacity: 1;
-  &.ng-hide-add.ng-hide-add-active, &.ng-hide-remove.ng-hide-remove-active {
-    transition: opacity linear 0.2s;
-  }
-  &.ng-hide {
-    opacity: 0;
-  }
-}
-
-/* Input field */
-
-.page-lobby-dcontainer-join-form-ninput {
-  @include size(100%, 50px);
-  outline: 0;
-  border: 0;
-  padding: 0;
-  font-size: $font-size-small;
-  text-align: center;
-  background: $color-primary-2;
-  &:hover {
-    cursor: pointer;
-  }
-  &:focus {
-    background: $color-primary-1;
-    cursor: text;
-  }
-}
-
-/* Small join button in form */
-
-.page-lobby-dcontainer-join-form-jbutton {
-  background-color: $color-primary-2;
-  @include size(100%, calc(100% - 50px));
-  bottom: 0;
-  border-top: 1px solid white;
-  text-align: center;
-  line-height: 150px;
-  font-size: $font-size-buttons;
-  padding: 0;
-  &:hover {
-    background: $color-primary-1;
-  }
 }

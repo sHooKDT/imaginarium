@@ -33,33 +33,53 @@
   @include size(60%, 100px);
   margin: auto;
   opacity: 1;
-  background: snow;
-  border-radius: 20px;
-  overflow: hidden;
+  background: transparent;
+}
+
+@keyframes but-scale {
+   0% {
+       transform: scale(1);
+  }
+  100% {
+      transform: scale(1.1);
+ }
 }
 
 .page-turn-ass-text {
-  @include size(calc(100% - 200px), 100%);
+  @include size(60%, 100%); left: 0;
   font-size: 36pt;
-  left: 0;
-  background: #fff3e0;
-  display: block;
-  padding: 0;
-  margin: 0;
-  outline: 0;
-  border: 0;
+  padding: 0; margin: 0; outline: 0;
+  border: 1px solid #7a7a7a;
+  border-radius: 10px;
   position: absolute;
+  background-color: rgba(235,235,235,1);
+  @include filter-gradient(#ebebeb, #e6e6e6, vertical);
+  @include background-image(linear-gradient(top, rgba(235,235,235,1) 0%, rgba(246,246,246,1) 47%, rgba(230,230,230,1) 100%));
+  
+  &:hover {
+    animation: but-scale 0.15s linear;
+    transform: scale(1.1);
+  }
+  &:focus {
+    border: 3px solid #FF8707;
+  }
 }
 
 .page-turn-ass-accept {
-  @include size(200px, 100%);
+  @include size(30%, 100%);
+  border: 1px solid #7a7a7a;
+  border-radius: 10px;
   line-height: 100px;
-  font-size: 48pt;
+  font-size: $font-size-buttons - 12pt;
   text-align: center;
   right: 0;
-  background: #f57c00;
-  cursor: pointer;
+  background-color: rgba(235,235,235,1);
+  @include filter-gradient(#ebebeb, #e6e6e6, vertical);
+  @include background-image(linear-gradient(top, rgba(235,235,235,1) 0%, rgba(246,246,246,1) 47%, rgba(230,230,230,1) 100%));
+  
   &:hover {
-    background: #A00;
+    cursor: pointer;
+    animation: but-scale 0.15s linear;
+    transform: scale(1.1);
   }
 }

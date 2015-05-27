@@ -24,7 +24,6 @@ IGame.factory('gameData', function ($websocket) {
             case 'score':
                 scoreTable = data.score;
                 gamescope.$broadcast('score-update', scoreTable);
-                console.log('Got new score table ' + scoreTable)
                 break;
         }
     });

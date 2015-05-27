@@ -4,6 +4,17 @@ IGame.controller('game-controller', function ($scope, gameData) {
 
     gamescope = $scope;
     $scope.debug_mode = false; // Show debug panel
+    $scope.debug_fill = function () {
+        $scope.score_table = [
+            {name:'Natasha',turn:27,vote:67,score:11,main:false},
+            {name:'Time',turn:54,vote:53,score:10,main:true},
+            {name:'Vanya',turn:24,vote:11,score:9,main:false},
+            {name:'Zhenya',turn:12,vote:9,score:1,main:false}
+        ];
+        $scope.state.hand = [44, 22, 33, 11, 99, 44];
+        $scope.state.table = [22, 44, 11, 66, 77, 88];
+        $scope.state.association = 'Grandmother'
+    }
 
     $scope.state = {
         stage: 0,
@@ -23,9 +34,7 @@ IGame.controller('game-controller', function ($scope, gameData) {
     ]
 
     $scope.$on('score-update', function(event, new_score) {
-        console.log('Got new score at scope context: ' + new_score);
         temp_score = new_score;
-        console.log('Temping success: ' + temp_score)
         for (i=0;i<new_score.length;i++) {
             if ($scope.score_table.length >= 1) {
                 temp_score[i].delta = new_score[i].score - $scope.score_table[i].score;
@@ -33,7 +42,6 @@ IGame.controller('game-controller', function ($scope, gameData) {
             else {temp_score[i].delta = new_score[i].score}
         }
         $scope.score_table = temp_score;
-        console.log('Score updated: ' + $scope.score_table)
     })
 
     $scope.$on('state-update', function(event, state) {
@@ -64,11 +72,11 @@ IGame.controller('game-controller', function ($scope, gameData) {
     $scope.activepage = 0;
 
     /* Join form control */
-    $scope.formvisible = false;
+    $scope.form = {state: 0}
 
     $scope.join = function () {
     	gameData.join_game($scope.state.name);
-        $scope.start_ready = true
+        $scope.form.state = 2
     };
 
     /* Start game handler (form switch) */
@@ -84,12 +92,10 @@ IGame.controller('game-controller', function ($scope, gameData) {
 
     $scope.choice = function (c_id, w_ass) {
         $scope.selectedcard = c_id;
-        console.log('Choice: ' + c_id);
         if ($scope.state.main && !w_ass) {
             $scope.overlayon = true
         }
         else {
-            console.log('Sending choice: ' + c_id + ', ass: ' + $scope.state.association);
             $scope.send_choice(c_id, $scope.state.association);
             $scope.activepage = 1;
             $scope.overlayon = false

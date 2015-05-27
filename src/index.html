@@ -1,101 +1,106 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="imaginarium">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Воображариум</title>
-    <link rel="icon" href="res/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="styles/main.css">
-    <link rel="stylesheet" type="text/css" href="styles/lobby.css">
-    <link rel="stylesheet" type="text/css" href="styles/turn.css">
-    <link rel="stylesheet" type="text/css" href="styles/table.css">
-    <link rel="stylesheet" type="text/css" href="styles/score.css">
-    <script src="js/external/angular.min.js"></script>
-    <script src="js/external/angular-animate.min.js"></script>
-    <script src="js/external/angular-websocket.min.js"></script>
-    <script src="js/main.js"></script>
-</head>
-<body ng-controller="game-controller" ng-switch on="pages[activepage]">
-    <style ng-if="showminimap">section{width: 85%;}</style>
-    <section ng-switch-when="page-lobby" class="page-lobby">
-        <div class="page-lobby-logo"></div>
-        <div class="page-lobby-dcontainer">
-            <div class="page-lobby-dcontainer-plcountext">{{state.pcount}} игроков в игре</div>
-            <div class="page-lobby-dcontainer-gstatustext">Игра еще не началась</div>
-            <div ng-click="formvisible=1" class="page-lobby-dcontainer-join">
-                <div ng-show="!formvisible" class="page-lobby-dcontainer-join-big join-form-animate">JOIN</div>
-                <div ng-show="formvisible" class="page-lobby-dcontainer-join-form join-form-animate">
-                    <input ng-model="state.name" class="page-lobby-dcontainer-join-form-ninput" placeholder="Как вас зовут?"/>
-                    <div ng-click="join()" class="page-lobby-dcontainer-join-form-jbutton">OK</div>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Воображариум</title>
+        <link rel="icon" href="res/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+        <link rel="stylesheet" type="text/css" href="styles/lobby.css">
+        <link rel="stylesheet" type="text/css" href="styles/turn.css">
+        <link rel="stylesheet" type="text/css" href="styles/table.css">
+        <link rel="stylesheet" type="text/css" href="styles/score.css">
+        <script src="js/external/angular.min.js"></script>
+        <script src="js/external/angular-animate.min.js"></script>
+        <script src="js/external/angular-websocket.min.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body ng-controller="game-controller" ng-switch on="pages[activepage]">
+        <style ng-if="showminimap">section{width: 85%;}</style>
+        <section ng-switch-when="page-lobby" class="page-lobby">
+            <div class="lobby-logo"></div>
+            <div class="lobby-container">
+                <div class="lobby-info">
+                    <p>{{state.pcount}} игроков уже готовы</p>
+                    <p>Игра ещё не началась</p>
                 </div>
-                <div ng-show="start_ready" ng-click="start_game()" class="page-lobby-dcontainer-start-but join-form-animate">START</div>
-            </div>
-        </div>
-    </section>
-    <section ng-switch-when="page-turn" class="page-turn">
-        <div class="page-turn-top-bar">
-        <p>Выбери карту</p>
-        <p ng-show="!state.main" class="t1">Ассоциация: {{ state.association }}</p>
-        <p ng-show="state.main" class="t1">Вы ведущий.</p>
-        </div>
-        <div class="page-turn-hand-container">
-<div ng-repeat="card in state.hand track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, false)" class="hand-card"></div>
-            <!-- <div ng-repeat="card in [0,2,3,4,1,55] track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, false)" class="hand-card"></div> -->
-        </div>
-        <div ng-show="overlayon" class="page-turn-overlay">
-            <div class="page-turn-overlay-layer"></div>
-            <div class="page-turn-overlay-ass-box">
-                <input ng-model="state.association" placeholder="Введите свою ассоциацию..." class="page-turn-ass-text" />
-                <div ng-click="choice(selectedcard, true)" class="page-turn-ass-accept">ACCEPT</div>
-            </div>
+                <div class="lobby-buttons" ng-switch on="form.state">
+                    <div class="button-join" ng-switch-when="0" ng-click="form.state=1">JOIN</div>
+                    <input type="text" class="join-input" placeholder="Ваше имя..." ng-switch-when="1" ng-model="state.name" />
+                    <div class="ok-button" ng-switch-when="1" ng-click="join()">OK</div>
+                    <div class="start-button" ng-switch-when="2" ng-click="start_game()">START</div>
                 </div>
-    </section>
-    <section ng-switch-when="page-vote" class="page-vote">
-        <div class="page-vote-top-bar">Какая карта больше всего похожа на {{ state.association }}? :</div>
-        <div class="page-vote-table-container">
-            <div ng-repeat="card in state.table track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, true)" class="table-card"></div>
-        </div>
-    </section>
-    <section ng-switch-when="page-score" class="page-score">
-        <table class="page-score-table">
-            <tr>
-                <td>Name</td>
-                <td>Turn</td>
-                <td>Vote</td>
-                <td>Score</td>
-            </tr>
-            <tr ng-repeat="player in score_table">
-                <td class="name">{{ player.name }}<div class="main-label" ng-show="player.main">main</div></td>
-                <td class="turn" ng-style="{'background-image':'url(res/cards/{{player.turn}}.jpg)'}"></td>
-                <td class="vote" ng-style="{'background-image':'url(res/cards/{{player.vote}}.jpg)'}"></td>
-                <td class="score">{{ player.score }}({{player.delta}})</td>
-            </tr>
-        </table>
-    </section>
-    <section ng-switch-when="page-wait" class="page-wait">
-        <div class="cbcontainer">
-            <div class="cbback cbside"></div>
-            <div class="cbleft cbside"></div>
-            <div class="cbright cbside"></div>
-            <div class="cbtop scbide"></div>
-            <div class="cbbottom cbside"></div>
-            <div class="cbfront cbside"></div>
-        </div>
-    </section>
-    <div ng-show="showminimap" class="page-minimap"></div>
-    <footer>
-        <center>sHooK Design @ 2015</center>
-    </footer>
-    <div ng-show="debug_mode" class="debug-panel">
-        <select ng-model="activepage" class="page-selector">
-            <option value="0">Lobby</option>
-            <option value="1">Wait</option>
-            <option value="2">Turn</option>
-            <option value="3">Vote</option>
-            <option value="4">Score</option>
-        </select><br>
-        <label><input ng-model="showminimap" type="checkbox">Show minimap</label><br>
-        <label><input ng-model="overlayon" type="checkbox">Show overlay(turn)</label><br>
-        <label><input ng-model="state.main" type="checkbox">Main toggle</label><br>
-    </div>
-</body>
-</html>
+            </div>
+        </section>
+        <section ng-switch-when="page-turn" class="page-turn">
+            <div class="page-turn-top-bar">
+                <p>Выбери карту</p>
+                <p ng-show="!state.main" class="t1">Ассоциация: {{ state.association }}</p>
+                <p ng-show="state.main" class="t1">Вы ведущий.</p>
+            </div>
+            <div class="page-turn-hand-container">
+                <div ng-repeat="card in state.hand track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, false)" class="hand-card"></div>
+            </div>
+            <div ng-show="overlayon" class="page-turn-overlay">
+                <div class="page-turn-overlay-layer"></div>
+                <div class="page-turn-overlay-ass-box">
+                    <input ng-model="state.association" placeholder="Введите свою ассоциацию..." class="page-turn-ass-text" />
+                    <div ng-click="choice(selectedcard, true)" class="page-turn-ass-accept">ACCEPT</div>
+                </div>
+            </div>
+        </section>
+        <section ng-switch-when="page-vote" class="page-vote">
+            <div class="page-vote-top-bar">Какая карта больше всего похожа на {{ state.association }}? :</div>
+            <div class="page-vote-table-container">
+                <div ng-repeat="card in state.table track by $index" ng-style="{'background-image':'url(res/cards/{{card}}.jpg)'}" ng-click="choice($index, true)" class="table-card"></div>
+            </div>
+        </section>
+        <section ng-switch-when="page-score" class="page-score">
+            <table class="page-score-table">
+                <tr>
+                    <td>Name</td>
+                    <td>Turn</td>
+                    <td>Vote</td>
+                    <td>Score</td>
+                </tr>
+                <tr ng-repeat="player in score_table">
+                    <td class="name">{{ player.name }}<div class="main-label" ng-show="player.main">main</div></td>
+                    <td class="turn" ng-style="{'background-image':'url(res/cards/{{player.turn}}.jpg)'}"></td>
+                    <td class="vote" ng-style="{'background-image':'url(res/cards/{{player.vote}}.jpg)'}"></td>
+                    <td class="score">{{ player.score }}({{player.delta}})</td>
+                </tr>
+            </table>
+        </section>
+        <section ng-switch-when="page-wait" class="page-wait">
+            <div class="cbcontainer">
+                <div class="cbback cbside"></div>
+                <div class="cbleft cbside"></div>
+                <div class="cbright cbside"></div>
+                <div class="cbtop scbide"></div>
+                <div class="cbbottom cbside"></div>
+                <div class="cbfront cbside"></div>
+            </div>
+        </section>
+        <div ng-show="showminimap" class="page-minimap"></div>
+        <footer>
+            <center>sHooK Design @ 2015</center>
+        </footer>
+        <div ng-show="debug_mode" class="debug-panel">
+            <select ng-model="activepage" class="page-selector">
+                <option value="0">Lobby</option>
+                <option value="1">Wait</option>
+                <option value="2">Turn</option>
+                <option value="3">Vote</option>
+                <option value="4">Score</option>
+                </select><label> Active page</label><br>
+                <select ng-model="form.state" class="page-selector">
+                    <option value="0">Join</option>
+                    <option value="1">Accept</option>
+                    <option value="2">Start</option>
+                    </select><label> Form state(lobby)</label><br>
+                    <label><input ng-model="showminimap" type="checkbox" disabled>Show minimap</label><br>
+                    <label><input ng-model="overlayon" type="checkbox">Show overlay(turn)</label><br>
+                    <label><input ng-model="state.main" type="checkbox">Main toggle</label><br>
+                    <input ng-click="debug_fill()" type="button" value="Fill structures">
+                </div>
+            </body>
+        </html>

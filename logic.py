@@ -1,8 +1,11 @@
 # Includes
-from random import random, randint, shuffle
+import random
 
 # Globals
-cards = [x for x in range(63)]
+cards = random.sample(range(920), 120)
+print('Cards for this game:')
+print('<%s>' % ', '.join(map(str, cards)))
+
 players = []
 table = []
 cur_ass = ''
@@ -23,7 +26,7 @@ def new_player(name, self):
 def give_cards(cards_num):
     for player in players:
         for x in range(cards_num):
-            player['user_hand'].append(cards.pop(randint(0, len(cards) - 1)))
+            player['user_hand'].append(cards.pop(random.randint(0, len(cards) - 1)))
 
 
 # Выкладываем карту из руки на стол
