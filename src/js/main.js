@@ -7,13 +7,17 @@ IGame.controller('game-controller', function ($scope, gameData) {
     $scope.debug_fill = function () {
         $scope.score_table = [
             {name:'Natasha',turn:27,vote:67,score:11,main:false},
-            {name:'Time',turn:54,vote:53,score:10,main:true},
-            {name:'Vanya',turn:24,vote:11,score:9,main:false},
+            {name:'Time',turn:54,vote:53,score:20,main:true},
+            {name:'Vanya',turn:24,vote:11,score:99,main:false},
             {name:'Zhenya',turn:12,vote:9,score:1,main:false}
         ];
         $scope.state.hand = [44, 22, 33, 11, 99, 44];
         $scope.state.table = [22, 44, 11, 66, 77, 88];
         $scope.state.association = 'Grandmother'
+        $scope.win_table = {
+            winner: 'Denis',
+            players: ['Vanya', 'Oleg', 'Bob', 'Bill']
+        }
     }
 
     $scope.state = {
@@ -33,6 +37,8 @@ IGame.controller('game-controller', function ($scope, gameData) {
         // {name:'Zhenya',turn:12,vote:9,score:1,main:false}
     ]
 
+    $scope.win_table = {};
+
     $scope.$on('score-update', function(event, new_score) {
         temp_score = new_score;
         for (i=0;i<new_score.length;i++) {
@@ -42,7 +48,7 @@ IGame.controller('game-controller', function ($scope, gameData) {
             else {temp_score[i].delta = new_score[i].score}
         }
         $scope.score_table = temp_score;
-    })
+    });
 
     $scope.$on('state-update', function(event, state) {
         $scope.state = state;
@@ -63,13 +69,15 @@ IGame.controller('game-controller', function ($scope, gameData) {
             case 4:
                 $scope.activepage = 4;
                 break;
+            case 5:
+                $scope.activepage = 5;
         }
     });
 
 
     /* Pages initialization */
-    $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-vote', 'page-score'];
-    $scope.activepage = 0;
+    $scope.pages = ['page-lobby', 'page-wait', 'page-turn', 'page-vote', 'page-score', 'page-win'];
+    $scope.activepage = 1;
 
     /* Join form control */
     $scope.form = {state: 0}

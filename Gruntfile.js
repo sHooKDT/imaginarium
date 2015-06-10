@@ -23,6 +23,10 @@ module.exports = function(grunt) {
             styles: {
                 files: ['src/styles/*'],
                 tasks: ['compass']
+            },
+            svg: {
+                files: ['src/res/*'],
+                tasks: ['copy']
             }
         },
         jshint: {

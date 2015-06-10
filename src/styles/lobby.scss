@@ -1,112 +1,105 @@
-@import'presets';
+@import 'presets';
+
 /* Info container styles (big box) */
 
 $lobby-container-height: 200px;
+
 .page-lobby {
     .lobby-logo {
-        @extend .pr_npos;
+        @include npos;
         @include size(100%, 100%);
         max-width: 750px;
         max-height: 350px;
         z-index: 1;
         margin: 10% auto;
-        background: url('../res/logo.svg') no-repeat 50% 50%;
-   }
-   .lobby-container {
-       @extend .pr_npos;
-       @include size(100%, $lobby-container-height);
-       max-width: 600px;
-       min-width: 480px;
-       margin: auto auto 5%;
-       z-index: 1;
-       .lobby-info {
-           line-height: $lobby-container-height / 4;
-           padding-left: 20px;
-           @include size(60%, 100%);
-           width: calc(100% - $lobby-container-height);
-           left: 0;
-           @extend .pr_classic-border;
-           background-color: rgba(255, 255, 255, 1);
-           @include filter-gradient(#ffffff, #ededed, vertical);
-           @include background-image(linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%));
-           p {
-               font-size: 24pt;
-           }
-           @keyframes hideinfo {
-           	0% {
-					transform: scale(1);
-           	}
-           	99% {
-					transform: scale(0);
-           	}
-           	100% {
-           		transform: scale(0);
-           		display: none;
-           	}
-           }
-           @media screen and (max-width: 600px) {
-           		animation: hideinfo 0.5s linear;
-           		transform: scale(0);
-            	//display: none;
-        	  }
-   }
-   .lobby-buttons {
-       @include size($lobby-container-height, 100%);
-       right: 0;
-       text-align: center;
-       @extend .pr_classic-border;
-        @media screen and (max-width: 600px) {
-           right: 0; left: 0;
-           margin: 0 auto;
-        	}
-       background-color: rgba(255, 255, 255, 1);
-       @include filter-gradient(#ffffff, #ededed, vertical);
-       @include background-image(linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%));
-       .button-join {
-           @include size(100%, 100%);
-           line-height: $lobby-container-height;
-           font-size: 48pt;
-           &:hover {
-               cursor: pointer;
-          }
-     }
-     .join-input {
-         @extend .pr_classic-border;
-         margin: 10px auto;
-         @include size(90%, 30px);
-         &:focus {
-             outline: 0;
-             cursor: text;
-             background: #FAFAFA;
+        background: url("../res/logo.svg") no-repeat 50% 50%;
+    }
+    .lobby-container {
+        @include npos;
+        @include size(100%, $lobby-container-height);
+        max-width: 600px;
+        min-width: 480px;
+        margin: auto auto 5%;
+        z-index: 1;
+        .lobby-info {
+            line-height: $lobby-container-height / 4;
+            padding-left: 20px;
+            @include size(60%, 100%);
+            width: calc(100% - $lobby-container-height);
+            left: 0;
+            @extend .pr_classic-border;
+            background-color: rgba(255, 255, 255, 1);
+            @include filter-gradient(#ffffff, #ededed, vertical);
+            @include background-image(linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%));
+            p {
+                font-size: 24pt;
+            }
+            @keyframes hideinfo {
+                0% {
+                    transform: scale(1);
+                }
+                99% {
+                    transform: scale(0);
+                }
+                100% {
+                    transform: scale(0);
+                    display: none;
+                }
+            }
+
+            @media screen and (max-width: 600px) {
+                animation: hideinfo 0.5s linear;
+                transform: scale(0);
+                //display: none;
+            }
         }
-   }
-   .ok-button {
-       @include size(90%, 140px);
-       line-height: 140px;
-       font-size: 48pt;
-       @extend .pr_classic-border;
-       margin: 0 10px auto;
-  }
-  .start-button {
-      @extend .button-join;
-      font-size: 36pt;
- }
- .button-join, .join-input, .ok-button, .start-button {
-     text-align: center;
-     @keyframes but-scale {
-         0% {
-             transform: scale(1);
+        .lobby-buttons {
+            @include size($lobby-container-height, 100%);
+            right: 0;
+            text-align: center;
+            @extend .pr_classic-border;
+            @media screen and (max-width: 600px) {
+                right: 0;
+                left: 0;
+                margin: 0 auto;
+            }
+            background-color: rgba(255, 255, 255, 1);
+            @include filter-gradient(#ffffff, #ededed, vertical);
+            @include background-image(linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%));
+            .button-join {
+                @include size(100%, 100%);
+                line-height: $lobby-container-height;
+                font-size: 36pt;
+                @include hover-scale(1, 1.1, 0.2s, join-but);
+            }
+            .join-input {
+                @extend .pr_classic-border;
+                margin: 10px auto;
+                @include size(90%, 30px);
+                &:focus {
+                    outline: 0;
+                    cursor: text;
+                    background: #FAFAFA;
+                }
+                @include hover-scale(1, 1.2, 0.2s, join-inp);
+            }
+            .ok-button {
+                @include size(90%, 140px);
+                line-height: 140px;
+                font-size: 48pt;
+                @extend .pr_classic-border;
+                margin: 0 10px auto;
+                @include hover-scale(0.8, 1, 0.2s, ok-but);
+            }
+            .start-button {
+                @extend .button-join;
+                font-size: 36pt;
+                @include hover-scale(1, 1.1, 0.2s, start-but);
+            }
+            .button-join, .join-input, .ok-button, .start-button {
+                text-align: center;
+                cursor: pointer;
+            }
         }
-        100% {
-            transform: scale(1.1);
-       }
-  }
-  &:hover {
-      cursor: pointer;
-      animation: but-scale 0.2s linear;
-      transform: scale(1.1);
- }
-}
-}
-}
+    }
 }

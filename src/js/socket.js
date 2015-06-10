@@ -13,6 +13,10 @@ IGame.factory('gameData', function ($websocket) {
     };
 
     var scoreTable = []
+    var winTable = {
+        winner: '',
+        players: []
+    }
 
     gameSocket.onMessage(function (mes) {
         var data = JSON.parse(mes.data);

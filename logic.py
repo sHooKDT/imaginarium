@@ -2,15 +2,26 @@
 import random
 
 # Globals
-cards = random.sample(range(920), 120)
-print('Cards for this game:')
-print('<%s>' % ', '.join(map(str, cards)))
-
+cards = []
 players = []
 table = []
 cur_ass = ''
 used_cards = []
 main_player = 0
+
+# Обнуление логического состояния игры
+def reinitialise():
+    global cards, main_player, used_cards, cur_ass, table, players
+    main_player = 0
+    cards = random.sample(range(920), 120)
+    print('Cards for this game:')
+    print('<%s>' % ', '.join(map(str, cards)))
+    used_cards = []
+    cur_ass = ''
+    table = []
+    for player in players:
+        player['score'] = 0
+        player['user_hand'] = []
 
 # Создаем нового игрока с именем x и сокетом y
 def new_player(name, self):

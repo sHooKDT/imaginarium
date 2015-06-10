@@ -19,9 +19,14 @@ game_stage = 0
 # 2 - Players turn
 # 3 - Voting
 # 4 - Score
+# 5 - Winner
 
 # Счетчик раундов (в 1 надо раздать 6 карт, дальше - по 1)
 round_num = 0
+
+# Победный счет
+win_score = 4
+isWon = False
 
 # Игроки в ожидании
 ready_count = 0
@@ -42,7 +47,16 @@ def all_ready():
     else:
         return False
 
+# Проверка наличия победителя
+def check_win():
+    global isWon
+    for player in logic.players:
+        if player['score'] >= win_score:
+            print('We have a winner - ' + player['name'])
+            change_stage(5)
+            isWon = True
 
+# Отсылаем текущее состояние игры
 def notify_all():
     for player in logic.players:
 
@@ -57,7 +71,7 @@ def notify_all():
                 'stage': game_stage,
                 'hand': player['user_hand'],
                 'main': isMain,
-                'table': [x['c_id'] for x in logic.table],
+                'table': [x['c_id'] for x in logic.table if x['owner']!=logic.players.index(player)],
                 'pcount': len(logic.players),
                 'association': logic.cur_ass,
                 'name': player['name']
@@ -66,7 +80,7 @@ def notify_all():
 
         player['socket'].write_message(mes)
 
-
+# Посылаем всем текущий счет (вызывается при переходе на страницу счета)
 def send_score():
     score_table = []
     for player in logic.players:
@@ -98,7 +112,6 @@ def send_score():
             'score': score_table
         }))
 
-
 # Меняем стадию и рассылаем данные клиентам
 def change_stage(new_st):
     global ready_count
@@ -129,6 +142,7 @@ def change_stage(new_st):
         else:
             logic.main_player = 0
 
+        logic.done_cards()
         # Обнуляем ассоциацию
         logic.cur_ass = ''
 
@@ -140,20 +154,35 @@ def change_stage(new_st):
     elif new_st == 4:
         logic.all_score(logic.main_player)
         send_score()
-        logic.done_cards()
+        check_win()
 
     # Рассылка текущих игровых данных
     notify_all()
 
     print('### Stage changed to: ' + str(new_st))
 
+    if (new_st == 4) & (isWon == False):
+        sleep(10)
+        change_stage(1) 
+
+# Запускаем новую игру
+def new_game():
+    global round_num, game_stage, ready_count, isWon
+    print('New game starting...')
+    # Обнуление состояний
+    round_num = 0
+    game_stage = 0
+    ready_count = 0
+    isWon = False
+    # Обнуление логики
+    logic.reinitialise()
+    change_stage(1)
 
 # Возвращает id игрока по сокеты клиента
 def identify_client(id_socket):
     for player in logic.players:
         if player['socket'] == id_socket: return logic.players.index(player)
     return False
-
 
 # Рассылка главной страницы
 class MainPageHandler(tornado.web.RequestHandler):
@@ -207,10 +236,7 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
             elif game_stage == 3:
                 logic.vote(data['choice'], client_id)
                 ready_count += 1
-                if all_ready():
-                    change_stage(4)
-                    sleep(random.randint(7, 13))
-                    change_stage(1)
+                if all_ready(): change_stage(4)
 
         elif data['type'] == 'join':
             print(data['data'] + ' is joining game.')
@@ -218,13 +244,12 @@ class UserSocketsHandler(tornado.websocket.WebSocketHandler):
             notify_all()
 
         elif data['type'] == 'start':
-            print('Someone is trying to start the game. Starting...')
-            change_stage(1)
+            new_game()
 
         else:
             print('Incorrect request')
 
-
+# Инициализация и запуск сервера
 application = tornado.web.Application([
     (r"/", MainPageHandler),
     (r"/socket", UserSocketsHandler),
@@ -233,7 +258,7 @@ application = tornado.web.Application([
 
 http_server = tornado.httpserver.HTTPServer(application)
 
-server_port = 80
+server_port = 27777
 print('Imaginarium game server started on port: ' + str(server_port))
 http_server.listen(server_port)
 tornado.ioloop.IOLoop.instance().start()

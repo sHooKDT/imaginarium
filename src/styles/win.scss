@@ -1,0 +1,78 @@
+@import "presets";
+
+.page-win {
+    .win-banner {
+        @include npos;
+        @include size(100%, 200px);
+        max-width: 650px;
+        margin: 3% auto;
+        line-height: 200px;
+        text-align: center;
+        font-size: 92pt;
+    }
+    ol {
+        @include size(100%, 40%);
+        max-width: 600px;
+        margin: calc(6% + 200px) auto;
+        // list-style: none;
+        padding: 0;
+        li {
+        	&:first-child {
+        		@keyframes pulse {
+        			0% {
+        				background: #FFB93D;
+        				transform: translateX(20px)
+        			}
+        			50% {
+        				background: orange;
+        				transform: translateX(0)
+        			}
+        			100% {
+        				background: #FFB93D;
+        				transform: translateX(20px)
+        			}
+        		}
+        		animation: pulse 1s infinite;
+        	}
+            @include size(100%, 50px);
+            line-height: 50px;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 24pt;
+            background: #FFB93D;
+            cursor: pointer;
+/*             &:hover {
+                @keyframes shake {
+                    0% {
+                        transform: scaleX(1.05);
+                    }
+                    50% {
+                        transform: scaleX(0.95);
+                    }
+                    100% {
+                        transform: scaleX(1.05);
+                    }
+                }
+
+                animation: shake 0.5s infinite;
+            } */
+        }
+    }
+    .win-restart {
+        @include size(100%, 100px);
+        max-width: 400px;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        margin: 70px auto;
+        line-height: 100px;
+        text-align: center;
+        font-size: 24pt;
+        cursor: pointer;
+        @include hover-scale(1, 1.1, 0.1s, wrest);
+        @extend .pr_classic-border;
+        background-color: rgba(255, 255, 255, 1);
+        @include filter-gradient(#ffffff, #ededed, vertical);
+        @include background-image(linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%));
+    }
+}

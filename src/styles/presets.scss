@@ -1,13 +1,24 @@
-@import 'compass';
+@import "compass";
 
 /* Color palette */
 
-$color-primary-0: #FF9900;	// Orange focus
-$color-primary-1: #FFC164;	// Orange back
-$color-primary-2: #FFB039;	// Orange back-mid
-$color-primary-3: #C67600;  // Orange dark-mid
-$color-primary-4: #9B5D00;	// Orange dark
+$color-primary-0: #FF9900;
+
+// Orange focus
+$color-primary-1: #FFC164;
+
+// Orange back
+$color-primary-2: #FFB039;
+
+// Orange back-mid
+$color-primary-3: #C67600;
+
+// Orange dark-mid
+$color-primary-4: #9B5D00;
+
+// Orange dark
 $color-secondary-1-0: #DC0055;
+
 /* Main Secondary color (1) */
 
 $color-secondary-1-1: #E55A90;
@@ -15,6 +26,7 @@ $color-secondary-1-2: #DF3275;
 $color-secondary-1-3: #AB0042;
 $color-secondary-1-4: #860034;
 $color-secondary-2-0: #FFFC00;
+
 /* Main Secondary color (2) */
 
 $color-secondary-2-1: #FFFD64;
@@ -22,22 +34,23 @@ $color-secondary-2-2: #FFFC39;
 $color-secondary-2-3: #C6C300;
 $color-secondary-2-4: #9B9900;
 
-
-
 /* Font settings */
 
 /* Google fonts imports */
 @import url(http://fonts.googleapis.com/css?family=Underdog&subset=latin,cyrillic);
+
 @import url(http://fonts.googleapis.com/css?family=Marck+Script&subset=latin,cyrillic);
 
 // $font-primary: 'AnfisaGroteskRegular';
-$font-primary: 'Underdog', cursive;
+$font-primary: "Underdog", cursive;
+
 // $font-primary: 'Marck Script', cursive;
-$font-secondary: 'Arial';
+$font-secondary: "Arial";
 $font-size-main: 24pt;
 $font-size-buttons: 48pt;
 $font-size-small: 16pt;
 $font-size-big: 64pt;
+
 /* Custom font */
 
 @font-face {
@@ -47,12 +60,15 @@ $font-size-big: 64pt;
     font-style: normal;
     font-weight: normal;
 }
-.pr_npos {
+
+
+@mixin npos {
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
 }
+
 @keyframes card_rotation {
     0% {
         transform: rotate(0);
@@ -64,9 +80,12 @@ $font-size-big: 64pt;
         transform: rotate(10deg);
     }
 }
+
+
 .pr_card-obj {
     display: inline-block;
     position: relative;
+    z-index: 1;
     margin: 10px;
     /*height: 431px;*/
     height: calc(50% - 20px);
@@ -79,21 +98,23 @@ $font-size-big: 64pt;
     background-position: center;
     cursor: pointer;
     &:hover {
-        animation: card_rotation linear 0.2s;
-        transform: rotate(10deg);
+        transition: all linear 0.1s;
+        transform: scaleX(1.1);
     }
 }
+
 .pr_bar-container {
-	.t1 {
-		position: absolute;
-		float: right;
-		right: 50px; top: 0;
-		font-size: $font-size-small;
-	}
-	p {
-		margin: 0;
-		display: block;
-	}
+    .t1 {
+        position: absolute;
+        float: right;
+        right: 50px;
+        top: 0;
+        font-size: $font-size-small;
+    }
+    p {
+        margin: 0;
+        display: block;
+    }
     top: 0;
     left: 0;
     height: 50px;
@@ -101,35 +122,66 @@ $font-size-big: 64pt;
     font-size: 40px;
     text-align: center;
     line-height: 50px;
-    background-color: rgba(224,224,224,1);
+    background-color: rgba(224, 224, 224, 1);
     @include filter-gradient(#e0e0e0, #ffffff, vertical);
-    @include background-image(linear-gradient(top, rgba(224,224,224,1) 0%, rgba(246,246,246,1) 47%, rgba(255,255,255,1) 100%));
+    @include background-image(linear-gradient(top, rgba(224, 224, 224, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(255, 255, 255, 1) 100%));
 }
+
 .pr_cards-container {
     bottom: 0;
-    left: 0; right: 0;
+    left: 0;
+    right: 0;
     margin: 0 auto;
     display: block;
     height: calc(100% - 50px);
     width: 100%;
     overflow: hidden;
+    text-align: center;
     @media screen and (min-width: 1500px) {
         right: 0;
         margin: 0 auto;
         width: 60%;
     }
 }
+
 .pr_classic-border {
     border: 1px solid gray;
     border-radius: 10px;
 }
+
 @mixin size($w, $h) {
     width: $w;
     height: $h;
 }
+
 @mixin placeholder {
-  ::-webkit-input-placeholder {@content}
-  :-moz-placeholder           {@content}
-  ::-moz-placeholder          {@content}
-  :-ms-input-placeholder      {@content}  
+    ::-webkit-input-placeholder {
+        @content;
+    }
+    :-moz-placeholder {
+        @content;
+    }
+    ::-moz-placeholder {
+        @content;
+    }
+    :-ms-input-placeholder {
+        @content;
+    }
+}
+
+@mixin hover-scale($start, $end, $time, $name) {
+    @keyframes #{$name}-scale {
+        0% {
+            transform: scale($start);
+        }
+        100% {
+            transform: scale($end);
+        }
+    }
+
+    transform: scale($start);
+    &:hover {
+        animation: #{$name}-scale $time linear;
+        transform: scale($end);
+    }
 }
