@@ -2,10 +2,10 @@
 Web-локализация карточной игры Имаджинариум (aka Dixit)
 
 ## Технологии
-Backend -> Python + Tornado
-Frontend -> HTML5 + AngularJS + SCSS
-Interaction -> Websocket
-Build -> GruntJS
+1.Backend -> Python + Tornado
+2. Frontend -> HTML5 + AngularJS + SCSS
+3. Interaction -> Websocket
+4. Build -> GruntJS
 
 ## Сборка
 1. Установить __iojs__ или __Node__ (для сборки)
